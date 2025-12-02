@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Shield, Check, X } from 'lucide-react';
+import { MapPin, Phone, Shield, Check, X, Syringe } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
 
 export default function LandingPage() {
@@ -13,15 +13,18 @@ export default function LandingPage() {
       {/* Minimal Header */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-slate-100">
         <div className="max-w-5xl mx-auto px-4 md:px-6 h-16 md:h-20 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <img src="/logo-header.png" alt="Saúde Livre" className="h-8 md:h-10 w-auto" />
-          </div>
-          <button
-            onClick={() => setShowChecker(true)}
-            className="text-sm font-medium text-brand-blue hover:text-brand-dark-blue transition-colors"
+          </a>
+          <a
+            href="https://wa.me/5548991895758?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20vacina."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-brand-blue hover:text-brand-dark-blue transition-colors flex items-center gap-2"
           >
-            Verificar Carteirinha →
-          </button>
+            <Phone className="w-4 h-4" />
+            <span className="hidden sm:inline">Agendar Vacina</span>
+          </a>
         </div>
       </nav>
 
@@ -53,13 +56,23 @@ export default function LandingPage() {
                 className="w-full sm:w-auto bg-brand-gradient text-white px-8 py-4 rounded-full font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20"
               >
                 <Shield className="w-5 h-5" />
-                Verificar Carteirinha Digital
+                Verificar Carteirinha
               </button>
               <a
-                href="#contato"
+                href="https://wa.me/5548991895758?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20vacina."
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 py-4 rounded-full font-medium text-brand-medium-blue border border-brand-medium-blue/20 hover:bg-brand-light transition-all flex items-center justify-center gap-2"
               >
+                <Phone className="w-5 h-5" />
                 Agendar Vacina
+              </a>
+              <a
+                href="/vacinas"
+                className="w-full sm:w-auto px-8 py-4 rounded-full font-medium text-brand-medium-blue border border-brand-medium-blue/20 hover:bg-brand-light transition-all flex items-center justify-center gap-2"
+              >
+                <Syringe className="w-5 h-5" />
+                Conhecer Vacinas
               </a>
             </div>
           </motion.div>
@@ -108,10 +121,15 @@ export default function LandingPage() {
                   <MapPin className="w-5 h-5 text-brand-medium-gray shrink-0" />
                   <p>Alameda Gov. Heriberto Hulse, 123<br />Centro, Florianópolis – SC</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <a
+                  href="https://wa.me/5548991895758?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 hover:text-brand-blue transition-colors"
+                >
                   <Phone className="w-5 h-5 text-brand-medium-gray shrink-0" />
                   <p>(48) 99189-5758</p>
-                </div>
+                </a>
                 <div className="pt-2">
                   <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                   Segunda a Sexta: 08:00 - 18:00
