@@ -48,7 +48,13 @@ export async function POST(req) {
       Use os seguintes documentos como referência principal para o calendário vacinal (SUS, SBIm, Gestantes, Crianças, etc):
       ${combinedContext}
 
-      Analise a imagem fornecida e os dados do paciente (Idade: ${patientInfo?.idade || 'Não informada'}, Situação: ${patientInfo?.situacao || 'Padrão'}).
+      Analise a imagem fornecida e os dados do paciente:
+      - Idade: ${patientInfo?.idade || 'Não informada'}
+      - Sexo: ${patientInfo?.situacao || 'Padrão'}
+      - Gestante: ${patientInfo?.gestante ? 'SIM' : 'NÃO'}
+      - Semanas de Gestação: ${patientInfo?.semanasGestacao || 'N/A'}
+
+      IMPORTANTE: Se a paciente for GESTANTE, verifique rigorosamente as vacinas indicadas para a semana gestacional atual dela (ex: dTpa a partir da 20ª semana, Influenza em qualquer fase, etc). Indique claramente nas "proximasDoses" as vacinas que ela precisa tomar AGORA ou em breve devido à gravidez.
       
       Retorne um JSON estrito com a seguinte estrutura:
       {
@@ -56,10 +62,10 @@ export async function POST(req) {
           { "nome": "Nome da Vacina", "data": "DD/MM/AAAA", "lote": "Lote se visível", "dose": "1ª dose, 2ª dose, etc" }
         ],
         "vacinasFaltantes": [
-          { "nome": "Nome da Vacina", "motivo": "Não encontrada na carteirinha e indicada para a idade" }
+          { "nome": "Nome da Vacina", "motivo": "Não encontrada na carteirinha e indicada para a idade/situação" }
         ],
         "proximasDoses": [
-          { "nome": "Nome da Vacina", "dataPrevista": "Data aproximada ou 'Imediato'", "indicacao": "Motivo da indicação" }
+          { "nome": "Nome da Vacina", "dataPrevista": "Data aproximada ou 'Imediato'", "indicacao": "Motivo da indicação (ex: Gestante 20+ semanas)" }
         ],
         "observacoes": "Texto geral sobre a situação vacinal do paciente e recomendações."
       }

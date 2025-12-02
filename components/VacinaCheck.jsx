@@ -158,7 +158,9 @@ export default function VacinaCheck() {
   const [dadosPaciente, setDadosPaciente] = useState({
     nome: '',
     dataNascimento: '',
-    sexo: ''
+    sexo: '',
+    gestante: false,
+    semanasGestacao: ''
   });
   const [imagemCarteira, setImagemCarteira] = useState(null);
   const [vacinasReconhecidas, setVacinasReconhecidas] = useState([]);
@@ -188,7 +190,9 @@ export default function VacinaCheck() {
           image: base64Image,
           patientInfo: {
             idade: calcularIdadeEmMeses(dadosPaciente.dataNascimento) + ' meses',
-            situacao: dadosPaciente.sexo
+            situacao: dadosPaciente.sexo,
+            gestante: dadosPaciente.gestante,
+            semanasGestacao: dadosPaciente.semanasGestacao
           }
         })
       });
@@ -448,7 +452,7 @@ export default function VacinaCheck() {
 
       {/* Header */}
       <header className="relative z-10 border-b border-slate-100 bg-white/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-4 py-4 md:px-6 md:py-6">
           <div className="flex items-center gap-4">
             <img src="/logo-header.png" alt="Saúde Livre" className="h-10 w-auto" />
             <div className="h-8 w-px bg-slate-200"></div>
@@ -463,8 +467,8 @@ export default function VacinaCheck() {
       </header>
 
       {/* Progress Steps */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-8">
-        <div className="flex items-center justify-center gap-4 mb-12">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 py-6 md:px-6 md:py-8">
+        <div className="flex items-center justify-center gap-4 mb-8 md:mb-12">
           {['Dados', 'Upload', 'Análise', 'Resultado'].map((label, i) => {
             const steps = ['inicio', 'upload', 'analise', 'resultado'];
             const currentIndex = steps.indexOf(step);
@@ -497,7 +501,7 @@ export default function VacinaCheck() {
         {/* Step: Início - Dados do paciente */}
         {step === 'inicio' && (
           <div className="max-w-xl mx-auto">
-            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
+            <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xl">
               <h2 className="text-2xl font-bold mb-2 text-brand-dark-blue">Dados do Paciente</h2>
               <p className="text-brand-medium-gray mb-8">Preencha as informações para iniciar a verificação</p>
 
@@ -525,11 +529,16 @@ export default function VacinaCheck() {
 
                 <div>
                   <label className="block text-sm font-medium text-brand-dark-gray mb-2">Sexo</label>
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 mb-4">
                     {['Masculino', 'Feminino'].map((sexo) => (
                       <button
                         key={sexo}
-                        onClick={() => setDadosPaciente({ ...dadosPaciente, sexo })}
+                        onClick={() => setDadosPaciente({
+                          ...dadosPaciente,
+                          sexo,
+                          gestante: sexo === 'Masculino' ? false : dadosPaciente.gestante,
+                          semanasGestacao: sexo === 'Masculino' ? '' : dadosPaciente.semanasGestacao
+                        })}
                         className={`flex-1 py-3 rounded-xl font-medium transition-all ${dadosPaciente.sexo === sexo
                           ? 'bg-brand-gradient text-white shadow-lg shadow-brand-blue/20'
                           : 'bg-white border border-slate-200 text-brand-medium-gray hover:border-brand-blue/50 hover:text-brand-blue'
@@ -539,6 +548,37 @@ export default function VacinaCheck() {
                       </button>
                     ))}
                   </div>
+
+                  {dadosPaciente.sexo === 'Feminino' && (
+                    <div className="bg-brand-light/30 p-4 rounded-xl border border-brand-blue/10">
+                      <label className="flex items-center gap-3 cursor-pointer mb-4">
+                        <input
+                          type="checkbox"
+                          checked={dadosPaciente.gestante}
+                          onChange={(e) => setDadosPaciente({ ...dadosPaciente, gestante: e.target.checked })}
+                          className="w-5 h-5 rounded border-slate-300 text-brand-blue focus:ring-brand-blue"
+                        />
+                        <span className="text-brand-dark-gray font-medium">Estou gestante</span>
+                      </label>
+
+                      {dadosPaciente.gestante && (
+                        <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                          <label className="block text-sm font-medium text-brand-dark-gray mb-2">
+                            Semanas de gestação
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            max="42"
+                            value={dadosPaciente.semanasGestacao}
+                            onChange={(e) => setDadosPaciente({ ...dadosPaciente, semanasGestacao: e.target.value })}
+                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all text-brand-dark-gray"
+                            placeholder="Ex: 20"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -556,7 +596,7 @@ export default function VacinaCheck() {
         {/* Step: Upload */}
         {step === 'upload' && (
           <div className="max-w-xl mx-auto">
-            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
+            <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xl">
               <h2 className="text-2xl font-bold mb-2 text-brand-dark-blue">Upload da Carteira</h2>
               <p className="text-brand-medium-gray mb-8">Envie uma foto ou PDF da carteira de vacinação</p>
 
@@ -608,7 +648,7 @@ export default function VacinaCheck() {
           <div className="max-w-4xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Imagem e OCR */}
-              <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl">
+              <div className="bg-white rounded-3xl border border-slate-100 p-4 md:p-6 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-brand-dark-blue">
                   <span className="w-8 h-8 rounded-lg bg-brand-light flex items-center justify-center text-brand-blue">📷</span>
                   Imagem Carregada
@@ -629,7 +669,7 @@ export default function VacinaCheck() {
               </div>
 
               {/* Vacinas reconhecidas */}
-              <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl">
+              <div className="bg-white rounded-3xl border border-slate-100 p-4 md:p-6 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-brand-dark-blue">
                   <span className="w-8 h-8 rounded-lg bg-brand-light flex items-center justify-center text-brand-blue">💉</span>
                   Vacinas Identificadas
@@ -707,7 +747,7 @@ export default function VacinaCheck() {
         {step === 'resultado' && analise && (
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Header do resultado */}
-            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
+            <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xl">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
                   <h2 className="text-2xl font-bold mb-1 text-brand-dark-blue">{dadosPaciente.nome}</h2>
@@ -746,7 +786,7 @@ export default function VacinaCheck() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 mt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 md:mt-8">
                 <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
                   <p className="text-3xl font-bold text-emerald-600">{analise.emDia.length}</p>
                   <p className="text-sm text-emerald-600/70">Em dia</p>
@@ -764,7 +804,7 @@ export default function VacinaCheck() {
 
             {/* Vacinas Atrasadas */}
             {analise.atrasadas.length > 0 && (
-              <div className="bg-white rounded-3xl border border-rose-100 p-6 shadow-xl">
+              <div className="bg-white rounded-3xl border border-rose-100 p-4 md:p-6 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-rose-600">
                   <span className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">⚠️</span>
                   Vacinas Atrasadas - Requer Atenção
@@ -786,7 +826,7 @@ export default function VacinaCheck() {
 
             {/* Próximas Vacinas */}
             {analise.proximas.length > 0 && (
-              <div className="bg-white rounded-3xl border border-amber-100 p-6 shadow-xl">
+              <div className="bg-white rounded-3xl border border-amber-100 p-4 md:p-6 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-amber-600">
                   <span className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">📅</span>
                   Próximas Vacinas
@@ -807,7 +847,7 @@ export default function VacinaCheck() {
             )}
 
             {/* Vacinas em Dia */}
-            <div className="bg-white rounded-3xl border border-emerald-100 p-6 shadow-xl">
+            <div className="bg-white rounded-3xl border border-emerald-100 p-4 md:p-6 shadow-xl">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-emerald-600">
                 <span className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">✓</span>
                 Vacinas em Dia

@@ -12,9 +12,9 @@ export default function LandingPage() {
     <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray selection:bg-brand-cyan/20">
       {/* Minimal Header */}
       <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-slate-100">
-        <div className="max-w-5xl mx-auto px-6 h-20 flex justify-between items-center">
+        <div className="max-w-5xl mx-auto px-4 md:px-6 h-16 md:h-20 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <img src="/logo-header.png" alt="Saúde Livre" className="h-10 w-auto" />
+            <img src="/logo-header.png" alt="Saúde Livre" className="h-8 md:h-10 w-auto" />
           </div>
           <button
             onClick={() => setShowChecker(true)}
@@ -26,23 +26,23 @@ export default function LandingPage() {
       </nav>
 
       {/* Clean Hero */}
-      <section className="pt-40 pb-20 px-6">
+      <section className="pt-32 pb-12 md:pt-40 md:pb-20 px-4 md:px-6">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="flex justify-center mb-8">
-              <img src="/hero-logo.png?v=4" alt="Saúde Livre Logo" className="h-auto max-h-32 md:max-h-[12rem] w-auto mx-auto" />
+            <div className="flex justify-center mb-6 md:mb-8">
+              <img src="/hero-logo.png?v=4" alt="Saúde Livre Logo" className="h-auto max-h-24 md:max-h-[12rem] w-auto mx-auto" />
             </div>
-            <span className="inline-block py-1 px-3 rounded-full bg-brand-light text-brand-medium-blue text-xs font-semibold tracking-wide mb-6 uppercase">
+            <span className="inline-block py-1.5 px-3 md:py-2 md:px-4 rounded-full bg-brand-light text-brand-medium-blue text-xs md:text-sm font-bold tracking-wide mb-4 md:mb-6 uppercase">
               Unidade Florianópolis Centro
             </span>
-            <h1 className="text-5xl md:text-6xl font-bold text-brand-dark-blue mb-8 tracking-tight leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-brand-dark-blue mb-6 md:mb-8 tracking-tight leading-tight">
               Prevenção é um ato de <span className="text-brand-blue">amor</span>.
             </h1>
-            <p className="text-xl text-brand-dark-gray mb-10 leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-brand-dark-gray mb-8 md:mb-10 leading-relaxed font-light">
               A maior rede de clínicas de vacinas do Brasil. <br className="hidden md:block" />
               Cuidado humanizado e proteção para todas as idades.
             </p>
@@ -67,9 +67,9 @@ export default function LandingPage() {
       </section>
 
       {/* Direct Information Grid */}
-      <section className="py-20 bg-white border-y border-slate-100">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12">
+      <section className="py-12 md:py-20 bg-white border-y border-slate-100">
+        <div className="max-w-5xl mx-auto px-4 md:px-6">
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-brand-dark-blue">
                 <span className="w-2 h-2 rounded-full bg-brand-cyan"></span>
@@ -137,8 +137,8 @@ export default function LandingPage() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-white/80 backdrop-blur-md overflow-y-auto"
           >
-            <div className="min-h-screen p-4 md:p-8 flex items-center justify-center">
-              <div className="w-full max-w-5xl relative bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
+            <div className="min-h-screen p-0 md:p-8 flex items-center justify-center">
+              <div className="w-full h-full md:h-auto md:max-w-5xl relative bg-slate-50 md:bg-white md:rounded-3xl shadow-2xl border-0 md:border border-slate-100 overflow-hidden flex flex-col">
                 <button
                   onClick={() => setShowChecker(false)}
                   className="absolute top-6 right-6 z-50 p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-600 transition-colors"
