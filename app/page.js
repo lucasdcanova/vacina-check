@@ -34,7 +34,7 @@ export default function LandingPage() {
             transition={{ duration: 0.6 }}
           >
             <div className="flex justify-center mb-8">
-              <img src="/hero-logo.png" alt="Saúde Livre Logo" className="h-32 w-auto" />
+              <img src="/hero-logo.png?v=4" alt="Saúde Livre Logo" className="h-auto max-h-32 md:max-h-[12rem] w-auto mx-auto" />
             </div>
             <span className="inline-block py-1 px-3 rounded-full bg-brand-light text-brand-medium-blue text-xs font-semibold tracking-wide mb-6 uppercase">
               Unidade Florianópolis Centro

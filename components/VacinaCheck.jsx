@@ -391,9 +391,9 @@ export default function VacinaCheck() {
   // Componente de Status Badge
   const StatusBadge = ({ status }) => {
     const styles = {
-      em_dia: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-      atrasada: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
-      proxima: 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+      em_dia: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+      atrasada: 'bg-rose-50 text-rose-600 border-rose-200',
+      proxima: 'bg-amber-50 text-amber-600 border-amber-200'
     };
     const labels = {
       em_dia: '✓ Em dia',
@@ -408,28 +408,24 @@ export default function VacinaCheck() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white font-sans">
+    <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray">
       {/* Background decorativo */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA2MCAwIEwgMCAwIDAgNjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl" />
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-white/10 backdrop-blur-xl bg-slate-900/50">
+      <header className="relative z-10 border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center shadow-lg shadow-cyan-500/25">
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
+            <img src="/logo-header.png" alt="Saúde Livre" className="h-10 w-auto" />
+            <div className="h-8 w-px bg-slate-200"></div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-brand-dark-blue">
                 VacinaCheck
               </h1>
-              <p className="text-slate-400 text-sm">Sistema de Verificação Vacinal</p>
+              <p className="text-brand-medium-gray text-sm">Sistema de Verificação Vacinal</p>
             </div>
           </div>
         </div>
@@ -448,19 +444,19 @@ export default function VacinaCheck() {
               <React.Fragment key={label}>
                 <div className="flex items-center gap-2">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all duration-300 ${isCurrent
-                      ? 'bg-gradient-to-br from-cyan-400 to-violet-500 text-white shadow-lg shadow-cyan-500/25 scale-110'
-                      : isActive
-                        ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
-                        : 'bg-slate-800 text-slate-500 border border-slate-700'
+                    ? 'bg-brand-gradient text-white shadow-lg shadow-brand-blue/25 scale-110'
+                    : isActive
+                      ? 'bg-brand-light text-brand-blue border border-brand-blue/20'
+                      : 'bg-white text-brand-medium-gray border border-slate-200'
                     }`}>
                     {i + 1}
                   </div>
-                  <span className={`hidden sm:block text-sm font-medium ${isActive ? 'text-white' : 'text-slate-500'}`}>
+                  <span className={`hidden sm:block text-sm font-medium ${isActive ? 'text-brand-dark-blue' : 'text-brand-medium-gray'}`}>
                     {label}
                   </span>
                 </div>
                 {i < 3 && (
-                  <div className={`w-12 h-0.5 ${isActive && i < currentIndex ? 'bg-gradient-to-r from-cyan-500 to-violet-500' : 'bg-slate-700'}`} />
+                  <div className={`w-12 h-0.5 ${isActive && i < currentIndex ? 'bg-brand-gradient' : 'bg-slate-200'}`} />
                 )}
               </React.Fragment>
             );
@@ -470,42 +466,42 @@ export default function VacinaCheck() {
         {/* Step: Início - Dados do paciente */}
         {step === 'inicio' && (
           <div className="max-w-xl mx-auto">
-            <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-2">Dados do Paciente</h2>
-              <p className="text-slate-400 mb-8">Preencha as informações para iniciar a verificação</p>
+            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
+              <h2 className="text-2xl font-bold mb-2 text-brand-dark-blue">Dados do Paciente</h2>
+              <p className="text-brand-medium-gray mb-8">Preencha as informações para iniciar a verificação</p>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Nome completo</label>
+                  <label className="block text-sm font-medium text-brand-dark-gray mb-2">Nome completo</label>
                   <input
                     type="text"
                     value={dadosPaciente.nome}
                     onChange={(e) => setDadosPaciente({ ...dadosPaciente, nome: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-white placeholder-slate-500"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all text-brand-dark-gray placeholder-slate-400"
                     placeholder="Digite o nome completo"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Data de nascimento</label>
+                  <label className="block text-sm font-medium text-brand-dark-gray mb-2">Data de nascimento</label>
                   <input
                     type="date"
                     value={dadosPaciente.dataNascimento}
                     onChange={(e) => setDadosPaciente({ ...dadosPaciente, dataNascimento: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none transition-all text-white"
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all text-brand-dark-gray"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Sexo</label>
+                  <label className="block text-sm font-medium text-brand-dark-gray mb-2">Sexo</label>
                   <div className="flex gap-4">
                     {['Masculino', 'Feminino'].map((sexo) => (
                       <button
                         key={sexo}
                         onClick={() => setDadosPaciente({ ...dadosPaciente, sexo })}
                         className={`flex-1 py-3 rounded-xl font-medium transition-all ${dadosPaciente.sexo === sexo
-                            ? 'bg-gradient-to-r from-cyan-500 to-violet-500 text-white'
-                            : 'bg-slate-900/50 border border-slate-700 text-slate-400 hover:border-slate-600'
+                          ? 'bg-brand-gradient text-white shadow-lg shadow-brand-blue/20'
+                          : 'bg-white border border-slate-200 text-brand-medium-gray hover:border-brand-blue/50 hover:text-brand-blue'
                           }`}
                       >
                         {sexo}
@@ -518,7 +514,7 @@ export default function VacinaCheck() {
               <button
                 onClick={() => setStep('upload')}
                 disabled={!dadosPaciente.nome || !dadosPaciente.dataNascimento}
-                className="w-full mt-8 py-4 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-xl font-semibold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                className="w-full mt-8 py-4 bg-brand-gradient rounded-xl font-semibold text-white shadow-lg shadow-brand-blue/20 hover:shadow-brand-blue/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
               >
                 Continuar →
               </button>
@@ -529,11 +525,11 @@ export default function VacinaCheck() {
         {/* Step: Upload */}
         {step === 'upload' && (
           <div className="max-w-xl mx-auto">
-            <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl">
-              <h2 className="text-2xl font-bold mb-2">Upload da Carteira</h2>
-              <p className="text-slate-400 mb-8">Envie uma foto ou PDF da carteira de vacinação</p>
+            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
+              <h2 className="text-2xl font-bold mb-2 text-brand-dark-blue">Upload da Carteira</h2>
+              <p className="text-brand-medium-gray mb-8">Envie uma foto ou PDF da carteira de vacinação</p>
 
-              <div className="border-2 border-dashed border-slate-600 rounded-2xl p-8 text-center hover:border-cyan-500/50 transition-colors">
+              <div className="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-brand-blue transition-colors bg-slate-50">
                 <input
                   type="file"
                   accept="image/*,.pdf"
@@ -542,33 +538,33 @@ export default function VacinaCheck() {
                   id="upload-carteira"
                 />
                 <label htmlFor="upload-carteira" className="cursor-pointer">
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-500/20 to-violet-500/20 flex items-center justify-center">
-                    <svg className="w-10 h-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-brand-light flex items-center justify-center">
+                    <svg className="w-10 h-10 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
-                  <p className="text-white font-medium mb-2">Clique para selecionar arquivo</p>
-                  <p className="text-slate-500 text-sm">ou arraste e solte aqui</p>
-                  <p className="text-slate-600 text-xs mt-4">Formatos aceitos: JPG, PNG, PDF</p>
+                  <p className="text-brand-dark-blue font-medium mb-2">Clique para selecionar arquivo</p>
+                  <p className="text-brand-medium-gray text-sm">ou arraste e solte aqui</p>
+                  <p className="text-brand-medium-gray text-xs mt-4">Formatos aceitos: JPG, PNG, PDF</p>
                 </label>
               </div>
 
               {carregando && (
-                <div className="mt-6 flex items-center justify-center gap-3 text-cyan-400">
-                  <div className="w-5 h-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                <div className="mt-6 flex items-center justify-center gap-3 text-brand-blue">
+                  <div className="w-5 h-5 border-2 border-brand-blue border-t-transparent rounded-full animate-spin" />
                   <span>Analisando carteirinha com IA (GPT-4o)...</span>
                 </div>
               )}
 
-              <div className="mt-8 p-4 bg-slate-900/50 rounded-xl border border-slate-700">
-                <p className="text-sm text-slate-400">
-                  <strong className="text-cyan-400">💡 Dica:</strong> Para melhores resultados, tire uma foto bem iluminada e legível da carteira de vacinação.
+              <div className="mt-8 p-4 bg-brand-light rounded-xl border border-brand-blue/10">
+                <p className="text-sm text-brand-dark-gray">
+                  <strong className="text-brand-blue">💡 Dica:</strong> Para melhores resultados, tire uma foto bem iluminada e legível da carteira de vacinação.
                 </p>
               </div>
 
               <button
                 onClick={() => setStep('inicio')}
-                className="w-full mt-6 py-3 bg-slate-700/50 rounded-xl font-medium text-slate-300 hover:bg-slate-700 transition-all"
+                className="w-full mt-6 py-3 bg-white border border-slate-200 rounded-xl font-medium text-brand-medium-gray hover:bg-slate-50 transition-all"
               >
                 ← Voltar
               </button>
@@ -581,9 +577,9 @@ export default function VacinaCheck() {
           <div className="max-w-4xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Imagem e OCR */}
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-6 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">📷</span>
+              <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-brand-dark-blue">
+                  <span className="w-8 h-8 rounded-lg bg-brand-light flex items-center justify-center text-brand-blue">📷</span>
                   Imagem Carregada
                 </h3>
 
@@ -591,24 +587,24 @@ export default function VacinaCheck() {
                   <img
                     src={imagemCarteira}
                     alt="Carteira de vacinação"
-                    className="w-full rounded-xl border border-slate-700 mb-4"
+                    className="w-full rounded-xl border border-slate-200 mb-4"
                   />
                 )}
 
-                <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700">
-                  <h4 className="text-sm font-medium text-slate-400 mb-2">Observações da IA:</h4>
-                  <pre className="text-xs text-slate-300 whitespace-pre-wrap font-mono">{textoOCR}</pre>
+                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                  <h4 className="text-sm font-medium text-brand-medium-gray mb-2">Observações da IA:</h4>
+                  <pre className="text-xs text-brand-dark-gray whitespace-pre-wrap font-mono">{textoOCR}</pre>
                 </div>
               </div>
 
               {/* Vacinas reconhecidas */}
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-6 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center text-violet-400">💉</span>
+              <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-xl">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-brand-dark-blue">
+                  <span className="w-8 h-8 rounded-lg bg-brand-light flex items-center justify-center text-brand-blue">💉</span>
                   Vacinas Identificadas
                 </h3>
 
-                <p className="text-slate-400 text-sm mb-4">Confirme as vacinas reconhecidas automaticamente:</p>
+                <p className="text-brand-medium-gray text-sm mb-4">Confirme as vacinas reconhecidas automaticamente:</p>
 
                 <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
                   {vacinasReconhecidas.map((vacina, index) => (
@@ -616,18 +612,18 @@ export default function VacinaCheck() {
                       key={index}
                       onClick={() => toggleVacinaConfirmada(index)}
                       className={`p-4 rounded-xl border cursor-pointer transition-all ${vacina.confirmada
-                          ? 'bg-emerald-500/10 border-emerald-500/30'
-                          : 'bg-slate-900/50 border-slate-700 hover:border-slate-600'
+                        ? 'bg-emerald-50 border-emerald-200'
+                        : 'bg-white border-slate-200 hover:border-brand-blue/50'
                         }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${vacina.confirmada ? 'bg-emerald-500 text-white' : 'bg-slate-700'
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${vacina.confirmada ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-400'
                           }`}>
                           {vacina.confirmada && '✓'}
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium capitalize">{vacina.nome}</p>
-                          <p className="text-sm text-slate-400">{vacina.dose}</p>
+                          <p className="font-medium capitalize text-brand-dark-gray">{vacina.nome}</p>
+                          <p className="text-sm text-brand-medium-gray">{vacina.dose}</p>
                         </div>
                       </div>
                     </div>
@@ -635,13 +631,13 @@ export default function VacinaCheck() {
                 </div>
 
                 {/* Adicionar vacina manual */}
-                <div className="mt-6 pt-6 border-t border-slate-700">
-                  <h4 className="text-sm font-medium text-slate-300 mb-3">Adicionar vacina manualmente:</h4>
+                <div className="mt-6 pt-6 border-t border-slate-100">
+                  <h4 className="text-sm font-medium text-brand-dark-gray mb-3">Adicionar vacina manualmente:</h4>
                   <div className="flex gap-2">
                     <select
                       value={novaVacina.nome}
                       onChange={(e) => setNovaVacina({ ...novaVacina, nome: e.target.value })}
-                      className="flex-1 px-3 py-2 bg-slate-900/50 border border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none"
+                      className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-blue outline-none text-brand-dark-gray"
                     >
                       <option value="">Selecione...</option>
                       {Object.keys(SINONIMOS_VACINAS).map(v => (
@@ -650,7 +646,7 @@ export default function VacinaCheck() {
                     </select>
                     <button
                       onClick={adicionarVacinaManual}
-                      className="px-4 py-2 bg-cyan-500/20 text-cyan-400 rounded-lg hover:bg-cyan-500/30 transition-colors"
+                      className="px-4 py-2 bg-brand-light text-brand-blue rounded-lg hover:bg-brand-blue/10 transition-colors"
                     >
                       +
                     </button>
@@ -660,13 +656,13 @@ export default function VacinaCheck() {
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={() => setStep('upload')}
-                    className="flex-1 py-3 bg-slate-700/50 rounded-xl font-medium text-slate-300 hover:bg-slate-700 transition-all"
+                    className="flex-1 py-3 bg-white border border-slate-200 rounded-xl font-medium text-brand-medium-gray hover:bg-slate-50 transition-all"
                   >
                     ← Voltar
                   </button>
                   <button
                     onClick={gerarAnalise}
-                    className="flex-1 py-3 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-xl font-semibold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all"
+                    className="flex-1 py-3 bg-brand-gradient rounded-xl font-semibold text-white shadow-lg shadow-brand-blue/20 hover:shadow-brand-blue/40 transition-all"
                   >
                     Gerar Análise →
                   </button>
@@ -680,11 +676,11 @@ export default function VacinaCheck() {
         {step === 'resultado' && analise && (
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Header do resultado */}
-            <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-2xl">
+            <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                  <h2 className="text-2xl font-bold mb-1">{dadosPaciente.nome}</h2>
-                  <p className="text-slate-400">
+                  <h2 className="text-2xl font-bold mb-1 text-brand-dark-blue">{dadosPaciente.nome}</h2>
+                  <p className="text-brand-medium-gray">
                     {new Date(dadosPaciente.dataNascimento).toLocaleDateString('pt-BR')} •
                     {' '}{Math.floor(calcularIdadeEmMeses(dadosPaciente.dataNascimento) / 12)} anos e {calcularIdadeEmMeses(dadosPaciente.dataNascimento) % 12} meses
                   </p>
@@ -694,7 +690,7 @@ export default function VacinaCheck() {
                 <div className="flex items-center gap-4">
                   <div className="relative w-24 h-24">
                     <svg className="w-24 h-24 transform -rotate-90">
-                      <circle cx="48" cy="48" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-700" />
+                      <circle cx="48" cy="48" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-100" />
                       <circle
                         cx="48" cy="48" r="40" fill="none" stroke="url(#gradient)" strokeWidth="8"
                         strokeDasharray={`${analise.percentualCompleto * 2.51} 251`}
@@ -702,53 +698,53 @@ export default function VacinaCheck() {
                       />
                       <defs>
                         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#06b6d4" />
-                          <stop offset="100%" stopColor="#8b5cf6" />
+                          <stop offset="0%" stopColor="#6de0e4" />
+                          <stop offset="100%" stopColor="#0072a2" />
                         </linearGradient>
                       </defs>
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-bold">{Math.round(analise.percentualCompleto)}%</span>
+                      <span className="text-2xl font-bold text-brand-dark-blue">{Math.round(analise.percentualCompleto)}%</span>
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400">Cobertura</p>
-                    <p className="text-sm text-slate-400">Vacinal</p>
+                    <p className="text-sm text-brand-medium-gray">Cobertura</p>
+                    <p className="text-sm text-brand-medium-gray">Vacinal</p>
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-4 mt-8">
-                <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
-                  <p className="text-3xl font-bold text-emerald-400">{analise.emDia.length}</p>
-                  <p className="text-sm text-emerald-300/70">Em dia</p>
+                <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+                  <p className="text-3xl font-bold text-emerald-600">{analise.emDia.length}</p>
+                  <p className="text-sm text-emerald-600/70">Em dia</p>
                 </div>
-                <div className="bg-rose-500/10 rounded-xl p-4 border border-rose-500/20">
-                  <p className="text-3xl font-bold text-rose-400">{analise.atrasadas.length}</p>
-                  <p className="text-sm text-rose-300/70">Atrasadas</p>
+                <div className="bg-rose-50 rounded-xl p-4 border border-rose-100">
+                  <p className="text-3xl font-bold text-rose-600">{analise.atrasadas.length}</p>
+                  <p className="text-sm text-rose-600/70">Atrasadas</p>
                 </div>
-                <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
-                  <p className="text-3xl font-bold text-amber-400">{analise.proximas.length}</p>
-                  <p className="text-sm text-amber-300/70">Próximas</p>
+                <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+                  <p className="text-3xl font-bold text-amber-600">{analise.proximas.length}</p>
+                  <p className="text-sm text-amber-600/70">Próximas</p>
                 </div>
               </div>
             </div>
 
             {/* Vacinas Atrasadas */}
             {analise.atrasadas.length > 0 && (
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-rose-500/20 p-6 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-rose-400">
-                  <span className="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center">⚠️</span>
+              <div className="bg-white rounded-3xl border border-rose-100 p-6 shadow-xl">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-rose-600">
+                  <span className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">⚠️</span>
                   Vacinas Atrasadas - Requer Atenção
                 </h3>
                 <div className="grid gap-3">
                   {analise.atrasadas.map((vacina, i) => (
-                    <div key={i} className="bg-slate-900/50 rounded-xl p-4 border border-slate-700 flex items-center justify-between">
+                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{vacina.nome}</p>
-                        <p className="text-sm text-slate-400">{vacina.dose} • Prevista: {vacina.idade}</p>
-                        <p className="text-xs text-slate-500 mt-1">Protege contra: {vacina.doencas}</p>
+                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
+                        <p className="text-sm text-brand-medium-gray">{vacina.dose} • Prevista: {vacina.idade}</p>
+                        <p className="text-xs text-brand-medium-gray mt-1">Protege contra: {vacina.doencas}</p>
                       </div>
                       <StatusBadge status="atrasada" />
                     </div>
@@ -759,18 +755,18 @@ export default function VacinaCheck() {
 
             {/* Próximas Vacinas */}
             {analise.proximas.length > 0 && (
-              <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-amber-500/20 p-6 shadow-2xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-amber-400">
-                  <span className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">📅</span>
+              <div className="bg-white rounded-3xl border border-amber-100 p-6 shadow-xl">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-amber-600">
+                  <span className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">📅</span>
                   Próximas Vacinas
                 </h3>
                 <div className="grid gap-3">
                   {analise.proximas.map((vacina, i) => (
-                    <div key={i} className="bg-slate-900/50 rounded-xl p-4 border border-slate-700 flex items-center justify-between">
+                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{vacina.nome}</p>
-                        <p className="text-sm text-slate-400">{vacina.dose} • Prevista: {vacina.idade}</p>
-                        <p className="text-xs text-slate-500 mt-1">Protege contra: {vacina.doencas}</p>
+                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
+                        <p className="text-sm text-brand-medium-gray">{vacina.dose} • Prevista: {vacina.idade}</p>
+                        <p className="text-xs text-brand-medium-gray mt-1">Protege contra: {vacina.doencas}</p>
                       </div>
                       <StatusBadge status="proxima" />
                     </div>
@@ -780,25 +776,25 @@ export default function VacinaCheck() {
             )}
 
             {/* Vacinas em Dia */}
-            <div className="bg-slate-800/50 backdrop-blur-xl rounded-3xl border border-emerald-500/20 p-6 shadow-2xl">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-emerald-400">
-                <span className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">✓</span>
+            <div className="bg-white rounded-3xl border border-emerald-100 p-6 shadow-xl">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-emerald-600">
+                <span className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">✓</span>
                 Vacinas em Dia
               </h3>
               {analise.emDia.length > 0 ? (
                 <div className="grid gap-3">
                   {analise.emDia.map((vacina, i) => (
-                    <div key={i} className="bg-slate-900/50 rounded-xl p-4 border border-slate-700 flex items-center justify-between">
+                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{vacina.nome}</p>
-                        <p className="text-sm text-slate-400">{vacina.dose}</p>
+                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
+                        <p className="text-sm text-brand-medium-gray">{vacina.dose}</p>
                       </div>
                       <StatusBadge status="em_dia" />
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-400">Nenhuma vacina confirmada ainda.</p>
+                <p className="text-brand-medium-gray">Nenhuma vacina confirmada ainda.</p>
               )}
             </div>
 
@@ -812,13 +808,13 @@ export default function VacinaCheck() {
                   setAnalise(null);
                   setImagemCarteira(null);
                 }}
-                className="flex-1 py-4 bg-slate-700/50 rounded-xl font-medium text-slate-300 hover:bg-slate-700 transition-all"
+                className="flex-1 py-4 bg-white border border-slate-200 rounded-xl font-medium text-brand-medium-gray hover:bg-slate-50 transition-all"
               >
                 Nova Verificação
               </button>
               <button
                 onClick={() => window.print()}
-                className="flex-1 py-4 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-xl font-semibold text-white shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all"
+                className="flex-1 py-4 bg-brand-gradient rounded-xl font-semibold text-white shadow-lg shadow-brand-blue/20 hover:shadow-brand-blue/40 transition-all"
               >
                 📄 Exportar Relatório
               </button>
@@ -828,8 +824,8 @@ export default function VacinaCheck() {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 mt-auto">
-        <div className="max-w-6xl mx-auto px-6 py-6 text-center text-slate-500 text-sm">
+      <footer className="relative z-10 border-t border-slate-100 mt-auto">
+        <div className="max-w-6xl mx-auto px-6 py-6 text-center text-brand-medium-gray text-sm">
           <p>Baseado no Calendário Vacinal do Ministério da Saúde (SUS) e SBIm 2025/2026</p>
           <p className="mt-1">Este sistema é apenas informativo. Consulte sempre um profissional de saúde.</p>
         </div>
