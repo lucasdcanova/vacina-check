@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, AlertTriangle, Clock, Calendar, ChevronDown, ChevronRight, Shield, Syringe, ArrowRight, Download, Share2, AlertCircle } from 'lucide-react';
 
 // Calendário Vacinal Brasileiro completo
 const CALENDARIO_VACINAL = {
@@ -169,6 +171,13 @@ export default function VacinaCheck() {
   const [carregando, setCarregando] = useState(false);
   const [textoOCR, setTextoOCR] = useState('');
   const [resultadoIA, setResultadoIA] = useState(null);
+  const [activeTab, setActiveTab] = useState('geral');
+  const [filtroCarteira, setFiltroCarteira] = useState('todas');
+
+  const agendarNoWhatsApp = (vacinaNome) => {
+    const texto = `Olá! Gostaria de agendar a vacina ${vacinaNome} para ${dadosPaciente.nome}.`;
+    window.open(`https://wa.me/5548991895758?text=${encodeURIComponent(texto)}`, '_blank');
+  };
 
   // Calcular idade em meses
   const calcularIdadeEmMeses = (dataNascimento) => {
@@ -745,153 +754,297 @@ export default function VacinaCheck() {
 
         {/* Step: Resultado */}
         {step === 'resultado' && analise && (
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Header do resultado */}
-            <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xl">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="max-w-4xl mx-auto">
+            {/* Header do Paciente */}
+            <div className="bg-white rounded-3xl border border-slate-100 p-6 md:p-8 shadow-xl mb-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-light rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
+
+              <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold mb-1 text-brand-dark-blue">{dadosPaciente.nome}</h2>
-                  <p className="text-brand-medium-gray">
+                  <h2 className="text-3xl font-bold text-brand-dark-blue mb-1">{dadosPaciente.nome}</h2>
+                  <p className="text-brand-medium-gray flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
                     {new Date(dadosPaciente.dataNascimento).toLocaleDateString('pt-BR')} •
-                    {' '}{Math.floor(calcularIdadeEmMeses(dadosPaciente.dataNascimento) / 12)} anos e {calcularIdadeEmMeses(dadosPaciente.dataNascimento) % 12} meses
+                    {Math.floor(calcularIdadeEmMeses(dadosPaciente.dataNascimento) / 12)} anos
+                    {dadosPaciente.gestante && <span className="text-brand-blue font-medium">• Gestante ({dadosPaciente.semanasGestacao} semanas)</span>}
                   </p>
                 </div>
+                <button
+                  onClick={() => setStep('inicio')}
+                  className="text-sm text-brand-blue hover:underline"
+                >
+                  Nova Análise
+                </button>
+              </div>
+            </div>
 
-                {/* Gauge de cobertura */}
-                <div className="flex items-center gap-4">
-                  <div className="relative w-24 h-24">
-                    <svg className="w-24 h-24 transform -rotate-90">
-                      <circle cx="48" cy="48" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-100" />
-                      <circle
-                        cx="48" cy="48" r="40" fill="none" stroke="url(#gradient)" strokeWidth="8"
-                        strokeDasharray={`${analise.percentualCompleto * 2.51} 251`}
-                        strokeLinecap="round"
-                      />
-                      <defs>
-                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#6de0e4" />
-                          <stop offset="100%" stopColor="#0072a2" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-brand-dark-blue">{Math.round(analise.percentualCompleto)}%</span>
+            {/* Tabs de Navegação */}
+            <div className="flex p-1 bg-white rounded-xl border border-slate-200 mb-6 shadow-sm">
+              {[
+                { id: 'geral', label: 'Visão Geral', icon: Shield },
+                { id: 'carteira', label: 'Minha Carteira', icon: Syringe },
+                { id: 'agenda', label: 'Planejamento', icon: Calendar },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
+                    ? 'bg-brand-gradient text-white shadow-md'
+                    : 'text-brand-medium-gray hover:bg-slate-50'
+                    }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Conteúdo das Tabs */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* TAB: VISÃO GERAL */}
+                {activeTab === 'geral' && (
+                  <div className="space-y-6">
+                    {/* Score Card */}
+                    <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-xl flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                      <div className="relative w-40 h-40 flex-shrink-0">
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle cx="50%" cy="50%" r="70" fill="none" stroke="#f1f5f9" strokeWidth="12" />
+                          <motion.circle
+                            cx="50%" cy="50%" r="70" fill="none" stroke="url(#gradient)" strokeWidth="12"
+                            strokeLinecap="round"
+                            initial={{ pathLength: 0 }}
+                            animate={{ pathLength: analise.percentualCompleto / 100 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            className="drop-shadow-lg"
+                          />
+                          <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#6de0e4" />
+                              <stop offset="100%" stopColor="#0072a2" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <span className="text-4xl font-bold text-brand-dark-blue">{Math.round(analise.percentualCompleto)}%</span>
+                          <span className="text-xs text-brand-medium-gray uppercase tracking-wider font-semibold">Protegido</span>
+                        </div>
+                      </div>
+
+                      <div className="flex-1 text-center md:text-left">
+                        <h3 className="text-2xl font-bold text-brand-dark-blue mb-2">
+                          {analise.percentualCompleto === 100
+                            ? "Parabéns! Sua vacinação está completa."
+                            : "Sua proteção precisa de atenção."}
+                        </h3>
+                        <p className="text-brand-dark-gray mb-6">
+                          {analise.percentualCompleto === 100
+                            ? "Você está em dia com todas as vacinas recomendadas para sua idade. Continue assim!"
+                            : `Identificamos ${analise.atrasadas.length} vacinas pendentes que são importantes para sua saúde.`}
+                        </p>
+
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="bg-emerald-50 p-3 rounded-2xl border border-emerald-100">
+                            <p className="text-2xl font-bold text-emerald-600">{analise.emDia.length}</p>
+                            <p className="text-xs text-emerald-700 font-medium">Em dia</p>
+                          </div>
+                          <div className="bg-rose-50 p-3 rounded-2xl border border-rose-100">
+                            <p className="text-2xl font-bold text-rose-600">{analise.atrasadas.length}</p>
+                            <p className="text-xs text-rose-700 font-medium">Atrasadas</p>
+                          </div>
+                          <div className="bg-amber-50 p-3 rounded-2xl border border-amber-100">
+                            <p className="text-2xl font-bold text-amber-600">{analise.proximas.length}</p>
+                            <p className="text-xs text-amber-700 font-medium">Próximas</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    {analise.atrasadas.length > 0 && (
+                      <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                            <AlertTriangle className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h4 className="text-lg font-bold">Regularize sua situação</h4>
+                            <p className="text-white/90 text-sm">Não deixe sua saúde para depois. Agende suas vacinas pendentes.</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setActiveTab('agenda')}
+                          className="px-6 py-3 bg-white text-rose-600 rounded-xl font-bold shadow-lg hover:bg-rose-50 transition-colors whitespace-nowrap"
+                        >
+                          Ver Pendências
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* TAB: MINHA CARTEIRA */}
+                {activeTab === 'carteira' && (
+                  <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+                    <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+                      <h3 className="text-lg font-bold text-brand-dark-blue">Detalhamento das Vacinas</h3>
+                      <div className="flex bg-slate-100 p-1 rounded-lg">
+                        {['todas', 'tomadas', 'pendentes'].map(filtro => (
+                          <button
+                            key={filtro}
+                            onClick={() => setFiltroCarteira(filtro)}
+                            className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase transition-all ${filtroCarteira === filtro ? 'bg-white text-brand-blue shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                              }`}
+                          >
+                            {filtro}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="divide-y divide-slate-100">
+                      {[...analise.atrasadas, ...analise.proximas, ...analise.emDia]
+                        .filter(v => {
+                          if (filtroCarteira === 'tomadas') return v.status === 'em_dia';
+                          if (filtroCarteira === 'pendentes') return v.status !== 'em_dia';
+                          return true;
+                        })
+                        .map((vacina, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="group hover:bg-slate-50 transition-colors"
+                          >
+                            <div className="p-5 flex items-start gap-4">
+                              <div className={`mt-1 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${vacina.status === 'em_dia' ? 'bg-emerald-100 text-emerald-600' :
+                                vacina.status === 'atrasada' ? 'bg-rose-100 text-rose-600' :
+                                  'bg-amber-100 text-amber-600'
+                                }`}>
+                                {vacina.status === 'em_dia' ? <Check className="w-5 h-5" /> :
+                                  vacina.status === 'atrasada' ? <AlertCircle className="w-5 h-5" /> :
+                                    <Clock className="w-5 h-5" />}
+                              </div>
+
+                              <div className="flex-1">
+                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-1">
+                                  <h4 className="font-bold text-brand-dark-gray text-lg">{vacina.nome}</h4>
+                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${vacina.status === 'em_dia' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                                    vacina.status === 'atrasada' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                                      'bg-amber-50 text-amber-700 border-amber-200'
+                                    }`}>
+                                    {vacina.status === 'em_dia' ? 'Tomada' :
+                                      vacina.status === 'atrasada' ? 'Atrasada' : 'Próxima'}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-brand-medium-gray mb-2">
+                                  {vacina.dose} • {vacina.status === 'em_dia' ? `Realizada em: ${vacina.idade}` : `Prevista para: ${vacina.idade}`}
+                                </p>
+                                <div className="bg-slate-50 rounded-lg p-3 text-sm text-slate-600 border border-slate-100">
+                                  <span className="font-semibold text-brand-blue">Protege contra:</span> {vacina.doencas}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+
+                      {[...analise.atrasadas, ...analise.proximas, ...analise.emDia].length === 0 && (
+                        <div className="p-12 text-center text-brand-medium-gray">
+                          Nenhuma vacina encontrada para este filtro.
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-brand-medium-gray">Cobertura</p>
-                    <p className="text-sm text-brand-medium-gray">Vacinal</p>
+                )}
+
+                {/* TAB: PLANEJAMENTO */}
+                {activeTab === 'agenda' && (
+                  <div className="space-y-6">
+                    {/* Atrasadas */}
+                    {analise.atrasadas.length > 0 && (
+                      <div className="bg-white rounded-3xl border border-rose-100 shadow-xl overflow-hidden">
+                        <div className="bg-rose-50 p-4 border-b border-rose-100 flex items-center gap-3">
+                          <AlertTriangle className="text-rose-600 w-5 h-5" />
+                          <h3 className="font-bold text-rose-700">Prioridade Alta - Regularizar Agora</h3>
+                        </div>
+                        <div className="p-6 grid gap-4">
+                          {analise.atrasadas.map((vacina, i) => (
+                            <div key={i} className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl border border-rose-100 hover:border-rose-200 hover:shadow-md transition-all bg-white">
+                              <div className="flex items-center gap-4 w-full md:w-auto">
+                                <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 font-bold shrink-0">
+                                  !
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-brand-dark-gray">{vacina.nome}</h4>
+                                  <p className="text-sm text-rose-600 font-medium">Deveria ter tomado: {vacina.idade}</p>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => agendarNoWhatsApp(vacina.nome)}
+                                className="w-full md:w-auto px-6 py-2.5 bg-rose-600 text-white rounded-lg font-semibold hover:bg-rose-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-rose-200"
+                              >
+                                <Calendar className="w-4 h-4" />
+                                Agendar
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Próximas */}
+                    {analise.proximas.length > 0 && (
+                      <div className="bg-white rounded-3xl border border-amber-100 shadow-xl overflow-hidden">
+                        <div className="bg-amber-50 p-4 border-b border-amber-100 flex items-center gap-3">
+                          <Clock className="text-amber-600 w-5 h-5" />
+                          <h3 className="font-bold text-amber-700">Próximos Passos</h3>
+                        </div>
+                        <div className="p-6 grid gap-4">
+                          {analise.proximas.map((vacina, i) => (
+                            <div key={i} className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl border border-amber-100 hover:border-amber-200 hover:shadow-md transition-all bg-white">
+                              <div className="flex items-center gap-4 w-full md:w-auto">
+                                <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+                                  <Clock className="w-5 h-5" />
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-brand-dark-gray">{vacina.nome}</h4>
+                                  <p className="text-sm text-amber-600 font-medium">Previsão: {vacina.idade}</p>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => agendarNoWhatsApp(vacina.nome)}
+                                className="w-full md:w-auto px-6 py-2.5 bg-white border border-amber-200 text-amber-700 rounded-lg font-semibold hover:bg-amber-50 transition-colors flex items-center justify-center gap-2"
+                              >
+                                Agendar Lembrete
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {analise.atrasadas.length === 0 && analise.proximas.length === 0 && (
+                      <div className="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-xl">
+                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Check className="w-10 h-10 text-emerald-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-brand-dark-blue mb-2">Tudo em ordem!</h3>
+                        <p className="text-brand-medium-gray">Você não tem vacinas pendentes ou previstas para os próximos meses.</p>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 md:mt-8">
-                <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
-                  <p className="text-3xl font-bold text-emerald-600">{analise.emDia.length}</p>
-                  <p className="text-sm text-emerald-600/70">Em dia</p>
-                </div>
-                <div className="bg-rose-50 rounded-xl p-4 border border-rose-100">
-                  <p className="text-3xl font-bold text-rose-600">{analise.atrasadas.length}</p>
-                  <p className="text-sm text-rose-600/70">Atrasadas</p>
-                </div>
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
-                  <p className="text-3xl font-bold text-amber-600">{analise.proximas.length}</p>
-                  <p className="text-sm text-amber-600/70">Próximas</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Vacinas Atrasadas */}
-            {analise.atrasadas.length > 0 && (
-              <div className="bg-white rounded-3xl border border-rose-100 p-4 md:p-6 shadow-xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-rose-600">
-                  <span className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">⚠️</span>
-                  Vacinas Atrasadas - Requer Atenção
-                </h3>
-                <div className="grid gap-3">
-                  {analise.atrasadas.map((vacina, i) => (
-                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
-                        <p className="text-sm text-brand-medium-gray">{vacina.dose} • Prevista: {vacina.idade}</p>
-                        <p className="text-xs text-brand-medium-gray mt-1">Protege contra: {vacina.doencas}</p>
-                      </div>
-                      <StatusBadge status="atrasada" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Próximas Vacinas */}
-            {analise.proximas.length > 0 && (
-              <div className="bg-white rounded-3xl border border-amber-100 p-4 md:p-6 shadow-xl">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-amber-600">
-                  <span className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">📅</span>
-                  Próximas Vacinas
-                </h3>
-                <div className="grid gap-3">
-                  {analise.proximas.map((vacina, i) => (
-                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
-                        <p className="text-sm text-brand-medium-gray">{vacina.dose} • Prevista: {vacina.idade}</p>
-                        <p className="text-xs text-brand-medium-gray mt-1">Protege contra: {vacina.doencas}</p>
-                      </div>
-                      <StatusBadge status="proxima" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Vacinas em Dia */}
-            <div className="bg-white rounded-3xl border border-emerald-100 p-4 md:p-6 shadow-xl">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-emerald-600">
-                <span className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">✓</span>
-                Vacinas em Dia
-              </h3>
-              {analise.emDia.length > 0 ? (
-                <div className="grid gap-3">
-                  {analise.emDia.map((vacina, i) => (
-                    <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100 flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-brand-dark-gray">{vacina.nome}</p>
-                        <p className="text-sm text-brand-medium-gray">{vacina.dose}</p>
-                      </div>
-                      <StatusBadge status="em_dia" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-brand-medium-gray">Nenhuma vacina confirmada ainda.</p>
-              )}
-            </div>
-
-            {/* Ações */}
-            <div className="flex gap-4">
-              <button
-                onClick={() => {
-                  setStep('inicio');
-                  setDadosPaciente({ nome: '', dataNascimento: '', sexo: '' });
-                  setVacinasReconhecidas([]);
-                  setAnalise(null);
-                  setImagemCarteira(null);
-                }}
-                className="flex-1 py-4 bg-white border border-slate-200 rounded-xl font-medium text-brand-medium-gray hover:bg-slate-50 transition-all"
-              >
-                Nova Verificação
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="flex-1 py-4 bg-brand-gradient rounded-xl font-semibold text-white shadow-lg shadow-brand-blue/20 hover:shadow-brand-blue/40 transition-all"
-              >
-                📄 Exportar Relatório
-              </button>
-            </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         )}
+
       </div>
 
       {/* Footer */}
@@ -901,6 +1054,6 @@ export default function VacinaCheck() {
           <p className="mt-1">Este sistema é apenas informativo. Consulte sempre um profissional de saúde.</p>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }

@@ -10,6 +10,9 @@ const cabin = Cabin({
 export const metadata = {
   title: 'Saúde Livre - Vacinas Florianópolis Centro',
   description: 'A maior rede de clínicas de vacinas do Brasil. Cuidado humanizado e proteção para todas as idades.',
+  icons: {
+    icon: '/logo-header.png',
+  },
 }
 
 export default function RootLayout({ children }) {
