@@ -40,7 +40,7 @@ export default function LandingPage() {
             <div className="flex justify-center mb-6 md:mb-8">
               <img src="/hero-logo.png?v=4" alt="Saúde Livre Logo" className="h-auto max-h-24 md:max-h-[12rem] w-auto mx-auto" />
             </div>
-            <span className="inline-block py-2 px-4 md:py-3 md:px-6 rounded-full bg-brand-light text-brand-medium-blue text-sm md:text-lg font-bold tracking-wide mb-4 md:mb-6 uppercase">
+            <span className="inline-block py-3 px-6 md:py-4 md:px-8 rounded-full bg-brand-light text-brand-medium-blue text-base md:text-xl font-bold tracking-wide mb-6 md:mb-8 uppercase shadow-sm">
               Unidade Florianópolis Centro
             </span>
             <h1 className="text-4xl md:text-6xl font-bold text-brand-dark-blue mb-6 md:mb-8 tracking-tight leading-tight">
