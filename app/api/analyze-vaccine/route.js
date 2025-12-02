@@ -5,7 +5,23 @@ import path from 'path';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+    // Defina a organização/projeto se necessário para acessar GPT-5
+    organization: process.env.OPENAI_ORG || process.env.OPENAI_ORGANIZATION,
+    project: process.env.OPENAI_PROJECT
 });
+
+// Ordem de modelos a tentar (sem fallback para famílias anteriores)
+const MODEL_CHAIN = ['gpt-5.1', 'gpt-5'];
+
+const formatErrorDetail = (error) => {
+    if (error?.response?.data) {
+        return typeof error.response.data === 'string'
+            ? error.response.data
+            : JSON.stringify(error.response.data);
+    }
+    if (error?.message) return error.message;
+    return 'Erro desconhecido';
+};
 
 export async function POST(req) {
     try {
@@ -73,8 +89,8 @@ export async function POST(req) {
       Se a imagem não for uma carteirinha de vacinação ou estiver ilegível, retorne um erro no campo observacoes.
     `;
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-5.1",
+        const generateReport = async (model) => openai.chat.completions.create({
+            model,
             messages: [
                 {
                     role: "system",
@@ -88,14 +104,39 @@ export async function POST(req) {
                     ]
                 }
             ],
-            max_tokens: 4096,
+            max_completion_tokens: 4096,
             response_format: { type: "json_object" }
         });
+
+        let response;
+        let usedModel = null;
+
+        const errors = [];
+        for (const model of MODEL_CHAIN) {
+            try {
+                response = await generateReport(model);
+                usedModel = model;
+                break;
+            } catch (error) {
+                const details = formatErrorDetail(error);
+                console.error(`Erro ao chamar OpenAI com modelo ${model}:`, details);
+                errors.push({ model, details });
+            }
+        }
+
+        if (!response) {
+            return NextResponse.json({
+                error: `Não foi possível usar os modelos disponíveis (${MODEL_CHAIN.join(', ')}) para analisar a carteirinha.`,
+                detalhes: errors
+            }, { status: 502 });
+        }
 
         const content = response.choices[0].message.content;
 
         try {
             const jsonResponse = JSON.parse(content);
+            jsonResponse.modeloUtilizado = usedModel;
+            jsonResponse.cadeiaModelosTentados = MODEL_CHAIN;
             return NextResponse.json(jsonResponse);
         } catch (e) {
             console.error("Erro ao fazer parse do JSON do OpenAI:", e);

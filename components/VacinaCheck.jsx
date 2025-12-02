@@ -206,12 +206,25 @@ export default function VacinaCheck() {
         })
       });
 
-      if (!response.ok) throw new Error('Falha na análise');
+      let payload = null;
+      try {
+        payload = await response.json();
+      } catch (parseError) {
+        console.error('Erro ao ler resposta da API:', parseError);
+      }
 
-      return await response.json();
+      if (!response.ok) {
+        const detalhes = Array.isArray(payload?.detalhes)
+          ? payload.detalhes.map(d => `${d.model}: ${d.details}`).join('; ')
+          : null;
+        const message = payload?.error || detalhes || 'Falha na análise';
+        throw new Error(detalhes ? `${message} | Detalhes: ${detalhes}` : message);
+      }
+
+      return payload;
     } catch (error) {
-      console.error(error);
-      alert('Erro ao analisar carteirinha. Verifique se a chave da API está configurada.');
+      console.error('Erro ao analisar carteirinha:', error);
+      alert(error?.message || 'Erro ao analisar carteirinha. Verifique se a chave da API está configurada.');
       return null;
     }
   };
