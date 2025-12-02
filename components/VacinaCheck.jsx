@@ -294,12 +294,40 @@ export default function VacinaCheck() {
     const file = e.target.files[0];
     if (file) {
       setCarregando(true);
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        setImagemCarteira(event.target.result);
+
+      try {
+        let imageDataUrl = null;
+
+        if (file.type === 'application/pdf') {
+          // Importar dinamicamente para evitar erros de SSR
+          const pdfjsLib = await import('pdfjs-dist');
+          pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          const page = await pdf.getPage(1); // Pega a primeira página
+
+          const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 para melhor qualidade
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          await page.render({ canvasContext: context, viewport: viewport }).promise;
+          imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        } else {
+          // É imagem
+          imageDataUrl = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(file);
+          });
+        }
+
+        setImagemCarteira(imageDataUrl);
 
         // Analisar com IA
-        const resultado = await analisarComIA(event.target.result);
+        const resultado = await analisarComIA(imageDataUrl);
 
         if (resultado) {
           setResultadoIA(resultado);
@@ -319,10 +347,13 @@ export default function VacinaCheck() {
           setTextoOCR("Falha na análise IA");
         }
 
-        setCarregando(false);
         setStep('analise');
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        console.error("Erro ao processar arquivo:", error);
+        alert("Erro ao processar o arquivo. Tente novamente.");
+      } finally {
+        setCarregando(false);
+      }
     }
   };
 

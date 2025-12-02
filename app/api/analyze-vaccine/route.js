@@ -15,23 +15,38 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Imagem não fornecida' }, { status: 400 });
         }
 
-        // Read the reference markdown file
-        const filePath = path.join(process.cwd(), 'calendario_vacinal_brasil.md');
-        const calendarioRef = fs.readFileSync(filePath, 'utf8');
+        // Read the reference markdown files
+        const publicDir = path.join(process.cwd(), 'public');
+
+        const files = [
+            'calendario_vacinal_brasil.md',
+            'calendario_vacinal_criancas.md',
+            'calendario_vacinal_sbim_nascimento_terceira_idade.md',
+            'vacinacao_gestantes_rede_privada.md'
+        ];
+
+        let combinedContext = '';
+
+        try {
+            for (const file of files) {
+                const filePath = path.join(publicDir, file);
+                if (fs.existsSync(filePath)) {
+                    const content = fs.readFileSync(filePath, 'utf8');
+                    combinedContext += `\n\n--- CONTEÚDO DO ARQUIVO ${file} ---\n${content}`;
+                } else {
+                    console.warn(`Arquivo de referência não encontrado: ${file}`);
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao ler arquivos de referência:", error);
+        }
 
         const systemPrompt = `
       Você é um especialista em imunização e saúde pública brasileira.
       Sua tarefa é analisar imagens de carteirinhas de vacinação e identificar as vacinas tomadas, comparando com o calendário oficial.
 
-      Use o seguinte documento como referência principal para o calendário vacinal (SUS e SBIm):
-      ${calendarioRef}
-
-      ALÉM DISSO, considere as seguintes vacinas recomendadas para GESTANTES na rede privada (e pública quando disponível):
-      1. dTpa (Difteria, Tétano e Coqueluche): A partir da 20ª semana de gestação.
-      2. Hepatite B: 3 doses, se não vacinada anteriormente.
-      3. Influenza: Dose única anual, em qualquer idade gestacional.
-      4. Covid-19: Conforme esquema vigente.
-      5. VSR (Vírus Sincicial Respiratório - Abrysvo): Entre 32 e 36 semanas de gestação (Rede Privada).
+      Use os seguintes documentos como referência principal para o calendário vacinal (SUS, SBIm, Gestantes, Crianças, etc):
+      ${combinedContext}
 
       Analise a imagem fornecida e os dados do paciente (Idade: ${patientInfo?.idade || 'Não informada'}, Situação: ${patientInfo?.situacao || 'Padrão'}).
       
