@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
@@ -8,6 +8,22 @@ import VacinaCheck from '@/components/VacinaCheck';
 export default function LandingPage() {
   const [showChecker, setShowChecker] = useState(false);
   const [showMapMenu, setShowMapMenu] = useState(false);
+  const [isClinicOpen, setIsClinicOpen] = useState(false);
+
+  useEffect(() => {
+    const checkOpen = () => {
+      const now = new Date();
+      const day = now.getDay();
+      const hour = now.getHours();
+      // Mon-Fri (1-5), 08:00 - 18:00
+      const open = day >= 1 && day <= 5 && hour >= 8 && hour < 18;
+      setIsClinicOpen(open);
+    };
+
+    checkOpen();
+    const interval = setInterval(checkOpen, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray selection:bg-brand-cyan/20">
@@ -188,8 +204,8 @@ export default function LandingPage() {
                   <Mail className="w-5 h-5 text-brand-medium-gray shrink-0" />
                   <p>contato@saudelivrefloripa.com.br</p>
                 </a>
-                <div className="pt-2">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                <div className="pt-2 flex items-center">
+                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${isClinicOpen ? 'bg-green-500' : 'bg-red-500'}`}></span>
                   Segunda a Sexta: 08:00 - 18:00
                 </div>
               </div>
