@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Syringe, Shield, Baby, User, Heart, Briefcase, Plane, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Search, Syringe, Shield, Baby, User, Heart, Briefcase, Plane, ChevronRight, ArrowLeft, MessageCircle } from 'lucide-react';
 
 const VACINAS = [
     {
@@ -197,8 +197,8 @@ export default function VacinasPage() {
                                     key={cat.id}
                                     onClick={() => setFiltro(cat.id)}
                                     className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${filtro === cat.id
-                                            ? 'bg-brand-dark-blue text-white shadow-lg shadow-brand-blue/20'
-                                            : 'bg-white text-brand-medium-gray border border-slate-200 hover:border-brand-blue/50'
+                                        ? 'bg-brand-dark-blue text-white shadow-lg shadow-brand-blue/20'
+                                        : 'bg-white text-brand-medium-gray border border-slate-200 hover:border-brand-blue/50'
                                         }`}
                                 >
                                     <cat.icon className="w-4 h-4" />
@@ -238,7 +238,7 @@ export default function VacinasPage() {
                                         rel="noopener noreferrer"
                                         className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-brand-blue hover:text-white transition-colors"
                                     >
-                                        <ChevronRight className="w-5 h-5" />
+                                        <MessageCircle className="w-5 h-5" />
                                     </a>
                                 </div>
                             </motion.div>

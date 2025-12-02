@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Shield, Check, X, Syringe } from 'lucide-react';
+import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
 
 export default function LandingPage() {
   const [showChecker, setShowChecker] = useState(false);
+  const [showMapMenu, setShowMapMenu] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray selection:bg-brand-cyan/20">
@@ -22,7 +23,7 @@ export default function LandingPage() {
             rel="noopener noreferrer"
             className="text-sm font-medium text-brand-blue hover:text-brand-dark-blue transition-colors flex items-center gap-2"
           >
-            <Phone className="w-4 h-4" />
+            <MessageCircle className="w-4 h-4" />
             <span className="hidden sm:inline">Agendar Vacina</span>
           </a>
         </div>
@@ -64,7 +65,7 @@ export default function LandingPage() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 py-4 rounded-full font-medium text-brand-medium-blue border border-brand-medium-blue/20 hover:bg-brand-light transition-all flex items-center justify-center gap-2"
               >
-                <Phone className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" />
                 Agendar Vacina
               </a>
               <a
@@ -117,9 +118,59 @@ export default function LandingPage() {
                 Contato
               </h3>
               <div className="space-y-4 text-sm text-brand-dark-gray">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-brand-medium-gray shrink-0" />
-                  <p>Alameda Gov. Heriberto Hulse, 123<br />Centro, Florianópolis – SC</p>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowMapMenu(!showMapMenu)}
+                    className="flex items-start gap-3 hover:text-brand-blue transition-colors text-left group"
+                  >
+                    <MapPin className="w-5 h-5 text-brand-medium-gray shrink-0 group-hover:text-brand-blue transition-colors" />
+                    <p>Alameda Gov. Heriberto Hulse, 123<br />Centro, Florianópolis – SC</p>
+                  </button>
+
+                  <AnimatePresence>
+                    {showMapMenu && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={() => setShowMapMenu(false)} />
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-20"
+                        >
+                          <div className="p-1">
+                            <div className="px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">Abrir com:</div>
+                            <a
+                              href="https://www.google.com/maps/search/?api=1&query=Alameda+Gov.+Heriberto+Hulse,+123,+Centro,+Florianópolis"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-3 py-2 text-sm text-brand-dark-gray hover:bg-slate-50 rounded-lg transition-colors"
+                              onClick={() => setShowMapMenu(false)}
+                            >
+                              Google Maps
+                            </a>
+                            <a
+                              href="https://waze.com/ul?q=Alameda+Gov.+Heriberto+Hulse,+123,+Centro,+Florianópolis"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-3 py-2 text-sm text-brand-dark-gray hover:bg-slate-50 rounded-lg transition-colors"
+                              onClick={() => setShowMapMenu(false)}
+                            >
+                              Waze
+                            </a>
+                            <a
+                              href="http://maps.apple.com/?q=Alameda+Gov.+Heriberto+Hulse,+123,+Centro,+Florianópolis"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 px-3 py-2 text-sm text-brand-dark-gray hover:bg-slate-50 rounded-lg transition-colors"
+                              onClick={() => setShowMapMenu(false)}
+                            >
+                              Apple Maps
+                            </a>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
                 <a
                   href="https://wa.me/5548991895758?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es."
@@ -127,7 +178,7 @@ export default function LandingPage() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 hover:text-brand-blue transition-colors"
                 >
-                  <Phone className="w-5 h-5 text-brand-medium-gray shrink-0" />
+                  <MessageCircle className="w-5 h-5 text-brand-medium-gray shrink-0" />
                   <p>(48) 99189-5758</p>
                 </a>
                 <div className="pt-2">
