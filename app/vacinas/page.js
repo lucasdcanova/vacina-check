@@ -124,6 +124,94 @@ const VACINAS = [
         indicacao: '4 a 60 anos',
         categoria: 'Todos',
         icon: Shield
+    },
+    {
+        id: 'covid-19',
+        nome: 'Covid-19',
+        descricao: 'Previne formas graves e óbitos causados pelo SARS-CoV-2.',
+        indicacao: 'A partir de 6 meses',
+        categoria: 'Todos',
+        icon: Shield
+    },
+    {
+        id: 'meningo-acwy',
+        nome: 'Meningocócica ACWY',
+        descricao: 'Previne meningite e infecções generalizadas causadas pelos meningococos A, C, W e Y.',
+        indicacao: '3, 5, 12 meses e adolescentes',
+        categoria: 'Todos',
+        icon: Baby
+    },
+    {
+        id: 'meningo-b',
+        nome: 'Meningocócica B',
+        descricao: 'Previne meningite e infecções generalizadas causadas pelo meningococo B.',
+        indicacao: '3, 5 e 12 meses',
+        categoria: 'Bebês',
+        icon: Baby
+    },
+    {
+        id: 'pneumo-conjugadas',
+        nome: 'Pneumocócicas (13, 15, 20)',
+        descricao: 'Proteção ampliada contra doenças pneumocócicas invasivas (meningite, pneumonia, otite).',
+        indicacao: '2, 4, 6 e 12-15 meses',
+        categoria: 'Bebês',
+        icon: Baby
+    },
+    {
+        id: 'pneumo-23',
+        nome: 'Pneumocócica 23',
+        descricao: 'Previne doenças pneumocócicas em idosos e grupos de risco.',
+        indicacao: '60+ anos e comorbidades',
+        categoria: 'Adultos',
+        icon: User
+    },
+    {
+        id: 'tetraviral',
+        nome: 'Tetraviral',
+        descricao: 'Previne sarampo, caxumba, rubéola e varicela.',
+        indicacao: '15 meses',
+        categoria: 'Bebês',
+        icon: Baby
+    },
+    {
+        id: 'varicela',
+        nome: 'Varicela',
+        descricao: 'Previne a varicela (catapora).',
+        indicacao: '15 meses e 4 anos',
+        categoria: 'Crianças',
+        icon: Baby
+    },
+    {
+        id: 'vsr',
+        nome: 'VSR (Vírus Sincicial Respiratório)',
+        descricao: 'Previne bronquiolite e pneumonia. Essencial para gestantes e idosos.',
+        indicacao: 'Gestantes e 60+ anos',
+        categoria: 'Gestantes',
+        icon: Heart
+    },
+    {
+        id: 'dt',
+        nome: 'Dupla Adulto (dT)',
+        descricao: 'Previne difteria e tétano. Reforço a cada 10 anos.',
+        indicacao: 'A partir de 7 anos',
+        categoria: 'Todos',
+        icon: Shield
+    },
+    {
+        id: 'dtp-infantil',
+        nome: 'Tríplice Bacteriana (DTP)',
+        descricao: 'Reforço contra difteria, tétano e coqueluche.',
+        indicacao: '15 meses e 4 anos',
+        categoria: 'Crianças',
+        icon: Baby
+    },
+    {
+        id: 'hib',
+        nome: 'Haemophilus influenzae b',
+        descricao: 'Previne infecções graves como meningite e pneumonia.',
+        indicacao: '2, 4, 6 e 15 meses',
+        categoria: 'Bebês',
+        icon: Baby
     }
 ];
 
