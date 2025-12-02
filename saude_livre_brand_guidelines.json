@@ -1,0 +1,289 @@
+{
+  "marca": {
+    "nome": "Saúde Livre",
+    "registro": "®",
+    "tagline": "Clínica de Vacinação",
+    "website": "vacinas.com.br",
+    "website_alternativo": "www.saudelivrevacinas.com.br"
+  },
+  "sobre_a_empresa": {
+    "tipo": "Rede de Clínicas de Vacinas",
+    "descricao": "Rede de Clínicas de Vacinas criada dentro do mais alto padrão de qualidade em vacinas. Oferece o que há de mais moderno em prevenção contra as doenças imunopreveníveis.",
+    "publico_alvo": [
+      "Bebês",
+      "Crianças",
+      "Adolescentes",
+      "Jovens",
+      "Adultos",
+      "Idosos"
+    ],
+    "servicos": [
+      "Vacinas para todas as faixas etárias e gêneros",
+      "Vacina ocupacional"
+    ]
+  },
+  "objetivo_do_manual": {
+    "descricao": "Auxiliar na aplicação do logo da Saúde Livre® nos mais diversos layouts e suportes, unificando e padronizando sua imagem institucional."
+  },
+  "contato": {
+    "departamento": "Departamento de Publicidade e Promoção",
+    "telefone": "+55 65 3548 4200",
+    "email": "contato@saudelivrevacinas.com.br",
+    "site": "www.saudelivrevacinas.com.br",
+    "instagram": "saudelivre.com.br",
+    "facebook": "saudelivre.com.br",
+    "observacao": "Para produzir qualquer material que envolva a marca, é obrigatória a aprovação do Departamento de Publicidade e Promoção. Todos os layouts com utilização da logo Saúde Livre® devem ser enviados para aprovação."
+  },
+  "logotipos": {
+    "marca_principal": {
+      "versoes": [
+        {
+          "tipo": "Horizontal",
+          "descricao": "Logo com símbolo à esquerda e texto 'Saúde Livre Clínica de Vacinação' à direita"
+        },
+        {
+          "tipo": "Vertical",
+          "descricao": "Logo com símbolo acima e texto abaixo"
+        }
+      ],
+      "variantes": [
+        {
+          "tipo": "Com tagline completa",
+          "elementos": ["Símbolo", "Saúde Livre", "Clínica de Vacinação"]
+        },
+        {
+          "tipo": "Com website",
+          "elementos": ["Símbolo", "Saúde Livre", "vacinas.com.br"]
+        },
+        {
+          "tipo": "Apenas símbolo",
+          "descricao": "Símbolo isolado com marca registrada"
+        },
+        {
+          "tipo": "Ícone para aplicativo",
+          "descricao": "Símbolo com cantos arredondados e texto 'Saúde Livre' abaixo"
+        }
+      ]
+    },
+    "aplicacoes_excepcionais": {
+      "descricao": "Aplicações especiais que requerem aprovação obrigatória do Departamento de Publicidade e Promoção",
+      "tipos": [
+        "Versão em uma cor para impressões com limitações",
+        "Versão especial para reduções impressas",
+        "Assinaturas (ex: aplicação em caneta brinde)"
+      ]
+    },
+    "tamanhos_minimos": {
+      "reducao_impressa": {
+        "horizontal_completo": "1cm",
+        "horizontal_simplificado": "0.8cm",
+        "com_website": "0.4cm"
+      },
+      "digital": {
+        "minimo": "120px"
+      }
+    }
+  },
+  "cores": {
+    "paleta_web": [
+      {
+        "nome": "Azul Escuro Principal",
+        "hex": "#15335e"
+      },
+      {
+        "nome": "Azul Médio",
+        "hex": "#17497e"
+      },
+      {
+        "nome": "Azul",
+        "hex": "#0072a2"
+      },
+      {
+        "nome": "Ciano/Turquesa",
+        "hex": "#6de0e4"
+      },
+      {
+        "nome": "Cinza Escuro",
+        "hex": "#464753"
+      },
+      {
+        "nome": "Cinza Médio",
+        "hex": "#8f9498"
+      }
+    ],
+    "paleta_print_cmyk": [
+      {
+        "nome": "Azul Escuro",
+        "cmyk": {
+          "c": 93,
+          "m": 74,
+          "y": 17,
+          "k": 30
+        }
+      },
+      {
+        "nome": "Azul Médio Escuro",
+        "cmyk": {
+          "c": 76,
+          "m": 70,
+          "y": 48,
+          "k": 20
+        }
+      },
+      {
+        "nome": "Azul",
+        "cmyk": {
+          "c": 87,
+          "m": 40,
+          "y": 5,
+          "k": 5
+        }
+      },
+      {
+        "nome": "Azul Petróleo",
+        "cmyk": {
+          "c": 95,
+          "m": 68,
+          "y": 6,
+          "k": 12
+        }
+      },
+      {
+        "nome": "Ciano Claro",
+        "cmyk": {
+          "c": 42,
+          "m": 0,
+          "y": 12,
+          "k": 0
+        }
+      },
+      {
+        "nome": "Cinza",
+        "cmyk": {
+          "c": 43,
+          "m": 33,
+          "y": 28,
+          "k": 0
+        }
+      }
+    ],
+    "pantone": [
+      {
+        "nome": "Azul Principal",
+        "codigo": "PANTONE 540 C"
+      },
+      {
+        "nome": "Ciano/Turquesa",
+        "codigo": "PANTONE 310 C"
+      }
+    ],
+    "gradiente": {
+      "tipo": "Linear",
+      "cores": [
+        {
+          "cor": "#6de0e4",
+          "posicao": "0%"
+        },
+        {
+          "cor": "#0072a2",
+          "posicao": "30%"
+        },
+        {
+          "cor": "#0b4780",
+          "posicao": "80-100%"
+        }
+      ],
+      "rotacao": "0% a 100%"
+    }
+  },
+  "tipografia": {
+    "fonte_principal": "Cabin",
+    "pesos": [
+      {
+        "nome": "Regular",
+        "uso": "Textos corridos, descrições"
+      },
+      {
+        "nome": "Medium",
+        "uso": "Textos de destaque médio"
+      },
+      {
+        "nome": "Semibold",
+        "uso": "Subtítulos"
+      },
+      {
+        "nome": "Bold",
+        "uso": "Títulos, chamadas principais"
+      }
+    ],
+    "caracteres_disponiveis": {
+      "maiusculas": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "minusculas": "abcdefghijklmnopqrstuvwxyz",
+      "numeros": "#0123456789"
+    },
+    "exemplo_aplicacao": {
+      "titulo": {
+        "texto": "Vacine Contra Hepatite B",
+        "fonte": "Cabin Bold"
+      },
+      "subtitulo": {
+        "texto": "Para crianças, adolescentes e adultos. Em crianças a 1° dose da vacina deve ser aplicada nos primeiros dias de vida ;)",
+        "fonte": "Cabin Bold"
+      },
+      "corpo": {
+        "texto": "Para crianças, adolescentes e adultos. Em crianças a 1° dose da vacina deve ser aplicada nos primeiros dias de vida. O esquema vacinal consiste em 3 doses.",
+        "fonte": "Cabin Regular"
+      }
+    }
+  },
+  "restricoes": {
+    "proibicoes": [
+      {
+        "regra": "Não alterar a proporção dos logos",
+        "descricao": "Manter sempre as proporções originais do logotipo"
+      },
+      {
+        "regra": "Não utilizar cores fora da escala institucional",
+        "descricao": "Usar apenas as cores definidas na paleta oficial"
+      },
+      {
+        "regra": "Não criar versões diferentes dos logos",
+        "descricao": "Não modificar ou criar variações não autorizadas"
+      },
+      {
+        "regra": "Não distorcer a marca",
+        "descricao": "Não esticar, comprimir ou deformar o logotipo"
+      },
+      {
+        "regra": "Não excluir/inserir elementos do logo",
+        "descricao": "Manter todos os elementos originais sem adicionar ou remover partes"
+      }
+    ]
+  },
+  "simbolo": {
+    "descricao": "Símbolo formado por duas formas entrelaçadas que criam um formato de coração/trevo de quatro folhas",
+    "cores_do_simbolo": {
+      "parte_superior": "Ciano/Turquesa (#6de0e4)",
+      "parte_inferior": "Azul Escuro (#15335e a #0072a2)",
+      "efeito": "Gradiente linear"
+    }
+  },
+  "aplicacoes": {
+    "fundos_permitidos": [
+      {
+        "tipo": "Fundo claro/cinza",
+        "versao_logo": "Colorida padrão"
+      },
+      {
+        "tipo": "Fundo azul escuro",
+        "versao_logo": "Colorida com texto em branco"
+      }
+    ]
+  },
+  "metadados_documento": {
+    "titulo": "Saúde Livre Brand Guideline",
+    "criador": "Adobe Illustrator CC 2017 (Macintosh)",
+    "data_criacao": "16/08/2018",
+    "total_paginas": 13
+  }
+}
