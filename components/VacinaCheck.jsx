@@ -632,7 +632,7 @@ export default function VacinaCheck() {
               {carregando && (
                 <div className="mt-6 flex items-center justify-center gap-3 text-brand-blue">
                   <div className="w-5 h-5 border-2 border-brand-blue border-t-transparent rounded-full animate-spin" />
-                  <span>Analisando carteirinha com IA (GPT-4o)...</span>
+                  <span>Analisando carteirinha com IA...</span>
                 </div>
               )}
 

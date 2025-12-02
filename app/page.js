@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
 
 export default function LandingPage() {
@@ -40,7 +40,7 @@ export default function LandingPage() {
             <div className="flex justify-center mb-6 md:mb-8">
               <img src="/hero-logo.png?v=4" alt="Saúde Livre Logo" className="h-auto max-h-24 md:max-h-[12rem] w-auto mx-auto" />
             </div>
-            <span className="inline-block py-1.5 px-3 md:py-2 md:px-4 rounded-full bg-brand-light text-brand-medium-blue text-xs md:text-sm font-bold tracking-wide mb-4 md:mb-6 uppercase">
+            <span className="inline-block py-2 px-4 md:py-3 md:px-6 rounded-full bg-brand-light text-brand-medium-blue text-sm md:text-lg font-bold tracking-wide mb-4 md:mb-6 uppercase">
               Unidade Florianópolis Centro
             </span>
             <h1 className="text-4xl md:text-6xl font-bold text-brand-dark-blue mb-6 md:mb-8 tracking-tight leading-tight">
@@ -180,6 +180,13 @@ export default function LandingPage() {
                 >
                   <MessageCircle className="w-5 h-5 text-brand-medium-gray shrink-0" />
                   <p>(48) 99189-5758</p>
+                </a>
+                <a
+                  href="mailto:contato@saudelivrefloripa.com.br"
+                  className="flex items-center gap-3 hover:text-brand-blue transition-colors"
+                >
+                  <Mail className="w-5 h-5 text-brand-medium-gray shrink-0" />
+                  <p>contato@saudelivrefloripa.com.br</p>
                 </a>
                 <div className="pt-2">
                   <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
