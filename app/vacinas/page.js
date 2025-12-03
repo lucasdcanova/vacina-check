@@ -5,12 +5,14 @@ import { motion } from 'framer-motion';
 import { Search, Syringe, Shield, Baby, User, Heart, Briefcase, Plane, ChevronRight, ArrowLeft, MessageCircle } from 'lucide-react';
 
 const VACINAS = [
+    // Vacinas
     {
         id: 'bcg',
         nome: 'BCG',
         descricao: 'Previne as formas graves de tuberculose, principalmente miliar e meníngea.',
         indicacao: 'Ao nascer',
         categoria: 'Bebês',
+        preco: 'R$ 150,00',
         icon: Baby
     },
     {
@@ -19,6 +21,7 @@ const VACINAS = [
         descricao: 'Previne a infecção pelo vírus da hepatite B.',
         indicacao: 'Ao nascer, 2, 4 e 6 meses',
         categoria: 'Todos',
+        preco: 'R$ 92,00',
         icon: Shield
     },
     {
@@ -27,6 +30,16 @@ const VACINAS = [
         descricao: 'Protege contra difteria, tétano, coqueluche, hepatite B e Haemophilus influenzae tipo b.',
         indicacao: '2, 4 e 6 meses',
         categoria: 'Bebês',
+        preco: 'R$ 350,00',
+        icon: Baby
+    },
+    {
+        id: 'hexa',
+        nome: 'Hexavalente',
+        descricao: 'Protege contra difteria, tétano, coqueluche, hepatite B, poliomielite e Haemophilus influenzae tipo b.',
+        indicacao: '2 e 6 meses',
+        categoria: 'Bebês',
+        preco: 'R$ 380,00',
         icon: Baby
     },
     {
@@ -35,6 +48,7 @@ const VACINAS = [
         descricao: 'Previne a paralisia infantil (poliomielite).',
         indicacao: '2, 4 e 6 meses',
         categoria: 'Bebês',
+        preco: 'Consulte',
         icon: Baby
     },
     {
@@ -43,7 +57,35 @@ const VACINAS = [
         descricao: 'Previne doenças invasivas e otite média aguda causadas por Streptococcus pneumoniae.',
         indicacao: '2, 4 e 12 meses',
         categoria: 'Bebês',
+        preco: 'Consulte',
         icon: Baby
+    },
+    {
+        id: 'pneumo-13',
+        nome: 'Pneumocócica 13',
+        descricao: 'Proteção ampliada contra 13 sorotipos de pneumococos.',
+        indicacao: 'A partir de 2 meses',
+        categoria: 'Bebês',
+        preco: 'R$ 370,00',
+        icon: Baby
+    },
+    {
+        id: 'pneumo-15',
+        nome: 'Pneumocócica 15',
+        descricao: 'Proteção ampliada contra 15 sorotipos de pneumococos.',
+        indicacao: 'A partir de 2 meses',
+        categoria: 'Bebês',
+        preco: 'R$ 399,00',
+        icon: Baby
+    },
+    {
+        id: 'pneumo-20',
+        nome: 'Pneumocócica 20',
+        descricao: 'Proteção mais ampla disponível contra pneumococos.',
+        indicacao: 'Adultos',
+        categoria: 'Adultos',
+        preco: 'R$ 590,00',
+        icon: User
     },
     {
         id: 'rotavirus',
@@ -51,6 +93,7 @@ const VACINAS = [
         descricao: 'Previne diarreia grave causada por rotavírus.',
         indicacao: '2 e 4 meses',
         categoria: 'Bebês',
+        preco: 'R$ 320,00',
         icon: Baby
     },
     {
@@ -59,79 +102,8 @@ const VACINAS = [
         descricao: 'Previne doença meningocócica causada pelo sorogrupo C.',
         indicacao: '3, 5 e 12 meses',
         categoria: 'Bebês',
+        preco: 'R$ 297,00',
         icon: Baby
-    },
-    {
-        id: 'febre-amarela',
-        nome: 'Febre Amarela',
-        descricao: 'Previne a febre amarela.',
-        indicacao: '9 meses e 4 anos',
-        categoria: 'Todos',
-        icon: Plane
-    },
-    {
-        id: 'triplice-viral',
-        nome: 'Tríplice Viral',
-        descricao: 'Previne sarampo, caxumba e rubéola.',
-        indicacao: '12 meses',
-        categoria: 'Todos',
-        icon: Shield
-    },
-    {
-        id: 'hepatite-a',
-        nome: 'Hepatite A',
-        descricao: 'Previne a infecção pelo vírus da hepatite A.',
-        indicacao: '15 meses',
-        categoria: 'Crianças',
-        icon: Baby
-    },
-    {
-        id: 'dtpa',
-        nome: 'dTpa',
-        descricao: 'Previne difteria, tétano e coqueluche. Essencial para gestantes.',
-        indicacao: 'Gestantes a partir de 20 semanas',
-        categoria: 'Gestantes',
-        icon: Heart
-    },
-    {
-        id: 'influenza',
-        nome: 'Influenza (Gripe)',
-        descricao: 'Previne a gripe e suas complicações.',
-        indicacao: 'Anual',
-        categoria: 'Todos',
-        icon: Shield
-    },
-    {
-        id: 'hpv',
-        nome: 'HPV',
-        descricao: 'Previne infecções pelo papilomavírus humano e cânceres relacionados.',
-        indicacao: '9 a 14 anos',
-        categoria: 'Adolescentes',
-        icon: User
-    },
-    {
-        id: 'herpes-zoster',
-        nome: 'Herpes Zóster',
-        descricao: 'Previne o herpes zóster (cobreiro) e neuralgia pós-herpética.',
-        indicacao: '50+ anos',
-        categoria: 'Adultos',
-        icon: User
-    },
-    {
-        id: 'dengue',
-        nome: 'Dengue (Qdenga)',
-        descricao: 'Previne a dengue causada pelos quatro sorotipos do vírus.',
-        indicacao: '4 a 60 anos',
-        categoria: 'Todos',
-        icon: Shield
-    },
-    {
-        id: 'covid-19',
-        nome: 'Covid-19',
-        descricao: 'Previne formas graves e óbitos causados pelo SARS-CoV-2.',
-        indicacao: 'A partir de 6 meses',
-        categoria: 'Todos',
-        icon: Shield
     },
     {
         id: 'meningo-acwy',
@@ -139,6 +111,7 @@ const VACINAS = [
         descricao: 'Previne meningite e infecções generalizadas causadas pelos meningococos A, C, W e Y.',
         indicacao: '3, 5, 12 meses e adolescentes',
         categoria: 'Todos',
+        preco: 'R$ 489,00',
         icon: Baby
     },
     {
@@ -147,23 +120,26 @@ const VACINAS = [
         descricao: 'Previne meningite e infecções generalizadas causadas pelo meningococo B.',
         indicacao: '3, 5 e 12 meses',
         categoria: 'Bebês',
+        preco: 'R$ 784,00',
         icon: Baby
     },
     {
-        id: 'pneumo-conjugadas',
-        nome: 'Pneumocócicas (13, 15, 20)',
-        descricao: 'Proteção ampliada contra doenças pneumocócicas invasivas (meningite, pneumonia, otite).',
-        indicacao: '2, 4, 6 e 12-15 meses',
-        categoria: 'Bebês',
-        icon: Baby
+        id: 'febre-amarela',
+        nome: 'Febre Amarela',
+        descricao: 'Previne a febre amarela.',
+        indicacao: '9 meses e 4 anos',
+        categoria: 'Todos',
+        preco: 'R$ 192,00',
+        icon: Plane
     },
     {
-        id: 'pneumo-23',
-        nome: 'Pneumocócica 23',
-        descricao: 'Previne doenças pneumocócicas em idosos e grupos de risco.',
-        indicacao: '60+ anos e comorbidades',
-        categoria: 'Adultos',
-        icon: User
+        id: 'triplice-viral',
+        nome: 'Tríplice Viral',
+        descricao: 'Previne sarampo, caxumba e rubéola.',
+        indicacao: '12 meses',
+        categoria: 'Todos',
+        preco: 'R$ 125,00',
+        icon: Shield
     },
     {
         id: 'tetraviral',
@@ -171,6 +147,7 @@ const VACINAS = [
         descricao: 'Previne sarampo, caxumba, rubéola e varicela.',
         indicacao: '15 meses',
         categoria: 'Bebês',
+        preco: 'R$ 345,00',
         icon: Baby
     },
     {
@@ -179,39 +156,304 @@ const VACINAS = [
         descricao: 'Previne a varicela (catapora).',
         indicacao: '15 meses e 4 anos',
         categoria: 'Crianças',
+        preco: 'R$ 240,00',
         icon: Baby
     },
     {
-        id: 'vsr',
-        nome: 'VSR (Vírus Sincicial Respiratório)',
-        descricao: 'Previne bronquiolite e pneumonia. Essencial para gestantes e idosos.',
-        indicacao: 'Gestantes e 60+ anos',
+        id: 'hepatite-a',
+        nome: 'Hepatite A',
+        descricao: 'Previne a infecção pelo vírus da hepatite A.',
+        indicacao: '15 meses',
+        categoria: 'Crianças',
+        preco: 'R$ 175,00',
+        icon: Baby
+    },
+    {
+        id: 'dtpa',
+        nome: 'dTpa',
+        descricao: 'Previne difteria, tétano e coqueluche. Essencial para gestantes.',
+        indicacao: 'Gestantes a partir de 20 semanas',
         categoria: 'Gestantes',
+        preco: 'R$ 289,00',
         icon: Heart
     },
     {
-        id: 'dt',
-        nome: 'Dupla Adulto (dT)',
-        descricao: 'Previne difteria e tétano. Reforço a cada 10 anos.',
-        indicacao: 'A partir de 7 anos',
-        categoria: 'Todos',
+        id: 'dtpa-ipv',
+        nome: 'dTpa + IPV',
+        descricao: 'Previne difteria, tétano, coqueluche e poliomielite.',
+        indicacao: 'Reforço',
+        categoria: 'Crianças',
+        preco: 'R$ 289,00',
         icon: Shield
     },
     {
-        id: 'dtp-infantil',
-        nome: 'Tríplice Bacteriana (DTP)',
-        descricao: 'Reforço contra difteria, tétano e coqueluche.',
-        indicacao: '15 meses e 4 anos',
-        categoria: 'Crianças',
+        id: 'influenza',
+        nome: 'Influenza (Gripe) Tetravalente',
+        descricao: 'Previne a gripe e suas complicações. Cepas atualizadas.',
+        indicacao: 'Anual',
+        categoria: 'Todos',
+        preco: 'R$ 110,00',
+        icon: Shield
+    },
+    {
+        id: 'efluelda',
+        nome: 'Efluelda (Gripe Alta Dose)',
+        descricao: 'Vacina da gripe com alta dose de antígeno, ideal para idosos.',
+        indicacao: '60+ anos',
+        categoria: 'Adultos',
+        preco: 'R$ 325,00',
+        icon: User
+    },
+    {
+        id: 'hpv-4',
+        nome: 'HPV Quadrivalente',
+        descricao: 'Previne infecções pelo papilomavírus humano (4 tipos).',
+        indicacao: '9 a 45 anos',
+        categoria: 'Adolescentes',
+        preco: 'R$ 879,80',
+        icon: User
+    },
+    {
+        id: 'hpv-9',
+        nome: 'HPV Nonavalente',
+        descricao: 'Proteção ampliada contra 9 tipos de HPV.',
+        indicacao: '9 a 45 anos',
+        categoria: 'Adolescentes',
+        preco: 'R$ 999,00',
+        icon: User
+    },
+    {
+        id: 'herpes-zoster',
+        nome: 'Herpes Zóster (Shingrix)',
+        descricao: 'Previne o herpes zóster (cobreiro) e neuralgia pós-herpética.',
+        indicacao: '50+ anos',
+        categoria: 'Adultos',
+        preco: 'R$ 1.089,00',
+        icon: User
+    },
+    {
+        id: 'dengue',
+        nome: 'Dengue (Qdenga)',
+        descricao: 'Previne a dengue causada pelos quatro sorotipos do vírus.',
+        indicacao: '4 a 60 anos',
+        categoria: 'Todos',
+        preco: 'R$ 310,20',
+        icon: Shield
+    },
+    {
+        id: 'febre-tifoide',
+        nome: 'Febre Tifoide',
+        descricao: 'Previne a febre tifoide.',
+        indicacao: 'Viajantes',
+        categoria: 'Todos',
+        preco: 'R$ 149,00',
+        icon: Plane
+    },
+    {
+        id: 'vsr-arexvy',
+        nome: 'VSR (Arexvy)',
+        descricao: 'Vacina contra Vírus Sincicial Respiratório para idosos.',
+        indicacao: '60+ anos',
+        categoria: 'Adultos',
+        preco: 'R$ 1.580,00',
+        icon: User
+    },
+    {
+        id: 'vsr-abrysvo',
+        nome: 'VSR (Abrysvo)',
+        descricao: 'Vacina contra VSR para gestantes e idosos.',
+        indicacao: 'Gestantes e 60+',
+        categoria: 'Gestantes',
+        preco: 'R$ 1.848,00',
+        icon: Heart
+    },
+    {
+        id: 'beyfortus',
+        nome: 'Beyfortus (Imunização VSR)',
+        descricao: 'Anticorpo monoclonal para prevenção de VSR em bebês.',
+        indicacao: 'Recém-nascidos',
+        categoria: 'Bebês',
+        preco: 'R$ 3.600,00',
         icon: Baby
     },
     {
-        id: 'hib',
-        nome: 'Haemophilus influenzae b',
-        descricao: 'Previne infecções graves como meningite e pneumonia.',
-        indicacao: '2, 4, 6 e 15 meses',
-        categoria: 'Bebês',
+        id: 'rhophylac',
+        nome: 'Rhophylac',
+        descricao: 'Imunoglobulina anti-D para gestantes Rh negativo.',
+        indicacao: 'Gestantes',
+        categoria: 'Gestantes',
+        preco: 'R$ 519,20',
+        icon: Heart
+    },
+
+    // Serviços
+    {
+        id: 'furo-orelha',
+        nome: 'Perfuração de Orelha',
+        descricao: 'Colocação de brincos com técnica humanizada e estéril.',
+        indicacao: 'Todas as idades',
+        categoria: 'Serviços',
+        preco: 'R$ 30,00',
+        icon: Heart
+    },
+    {
+        id: 'aplicacao-brinco',
+        nome: 'Aplicação de Brinco',
+        descricao: 'Procedimento completo de aplicação.',
+        indicacao: 'Todas as idades',
+        categoria: 'Serviços',
+        preco: 'R$ 180,00',
+        icon: Heart
+    },
+    {
+        id: 'home-care',
+        nome: 'Home Care',
+        descricao: 'Atendimento domiciliar para vacinação e procedimentos.',
+        indicacao: 'Sob agendamento',
+        categoria: 'Serviços',
+        preco: 'R$ 30,00',
+        icon: Briefcase
+    },
+    {
+        id: 'laserterapia',
+        nome: 'Laserterapia',
+        descricao: 'Tratamento com laser para feridas e inflamações.',
+        indicacao: 'Sob avaliação',
+        categoria: 'Serviços',
+        preco: 'Consulte',
+        icon: Syringe
+    },
+    {
+        id: 'soroterapia',
+        nome: 'Soroterapia',
+        descricao: 'Administração de soro e medicamentos endovenosos.',
+        indicacao: 'Sob prescrição',
+        categoria: 'Serviços',
+        preco: 'Consulte',
+        icon: Syringe
+    },
+
+    // Injetáveis
+    {
+        id: 'aplicacao-injetaveis',
+        nome: 'Aplicação de Injetáveis',
+        descricao: 'Aplicação de medicamentos prescritos (IM/SC).',
+        indicacao: 'Com receita',
+        categoria: 'Injetáveis',
+        preco: 'R$ 30,00',
+        icon: Syringe
+    },
+    {
+        id: 'aplicacao-vitaminas',
+        nome: 'Aplicação de Vitaminas',
+        descricao: 'Reposição vitamínica injetável.',
+        indicacao: 'Sob prescrição',
+        categoria: 'Injetáveis',
+        preco: 'R$ 20,00',
+        icon: Syringe
+    },
+
+    // Exames
+    {
+        id: 'teste-pezinho',
+        nome: 'Teste do Pezinho',
+        descricao: 'Triagem neonatal para diversas doenças.',
+        indicacao: 'Recém-nascidos',
+        categoria: 'Exames',
+        preco: 'R$ 89,90',
         icon: Baby
+    },
+    {
+        id: 'teste-covid',
+        nome: 'Teste Covid-19',
+        descricao: 'Teste rápido de antígeno para Covid-19.',
+        indicacao: 'Sintomáticos',
+        categoria: 'Exames',
+        preco: 'R$ 30,00',
+        icon: Shield
+    },
+    {
+        id: 'perfil-lipidico',
+        nome: 'Perfil Lipídico',
+        descricao: 'Exame para avaliação de colesterol e triglicerídeos.',
+        indicacao: 'Jejum necessário',
+        categoria: 'Exames',
+        preco: 'R$ 89,90',
+        icon: Shield
+    },
+    {
+        id: 'funcao-renal',
+        nome: 'Função Renal',
+        descricao: 'Avaliação da saúde dos rins.',
+        indicacao: 'Todos',
+        categoria: 'Exames',
+        preco: 'R$ 99,90',
+        icon: Shield
+    },
+    {
+        id: 'hemoglobina-glicada',
+        nome: 'Hemoglobina Glicada',
+        descricao: 'Controle de diabetes e glicemia.',
+        indicacao: 'Todos',
+        categoria: 'Exames',
+        preco: 'R$ 59,90',
+        icon: Shield
+    },
+    {
+        id: 'beta-hcg',
+        nome: 'Beta HCG',
+        descricao: 'Teste de gravidez sanguíneo.',
+        indicacao: 'Suspeita de gravidez',
+        categoria: 'Exames',
+        preco: 'R$ 59,90',
+        icon: Heart
+    },
+    {
+        id: 'exame-dengue',
+        nome: 'Exame Dengue (NS1 / IgG IgM)',
+        descricao: 'Diagnóstico rápido de Dengue.',
+        indicacao: 'Sintomáticos',
+        categoria: 'Exames',
+        preco: 'R$ 59,90',
+        icon: Shield
+    },
+
+    // Produtos
+    {
+        id: 'pikluc',
+        nome: 'Pikluc',
+        descricao: 'Aparelho para alívio da dor na injeção.',
+        indicacao: 'Uso local',
+        categoria: 'Produtos',
+        preco: 'R$ 30,00',
+        icon: Baby
+    },
+    {
+        id: 'buzzy',
+        nome: 'Fever Friends',
+        descricao: 'Compressas adesivas para alívio da febre.',
+        indicacao: 'Uso local',
+        categoria: 'Produtos',
+        preco: 'R$ 50,00',
+        icon: Baby
+    },
+    {
+        id: 'xua',
+        nome: 'Xuá Irrigador Nasal',
+        descricao: 'Dispositivo para lavagem nasal.',
+        indicacao: 'Uso nasal',
+        categoria: 'Produtos',
+        preco: 'R$ 50,00',
+        icon: Baby
+    },
+    {
+        id: 'brinco',
+        nome: 'Brinco Estéril',
+        descricao: 'Par de brincos estéreis para perfuração.',
+        indicacao: 'Uso auricular',
+        categoria: 'Produtos',
+        preco: 'R$ 65,00',
+        icon: Heart
     }
 ];
 
@@ -221,6 +463,10 @@ const CATEGORIAS = [
     { id: 'Adolescentes', label: 'Adolescentes', icon: User },
     { id: 'Adultos', label: 'Adultos e Idosos', icon: Briefcase },
     { id: 'Gestantes', label: 'Gestantes', icon: Heart },
+    { id: 'Serviços', label: 'Serviços', icon: Heart },
+    { id: 'Injetáveis', label: 'Injetáveis', icon: Syringe },
+    { id: 'Exames', label: 'Exames', icon: Shield },
+    { id: 'Produtos', label: 'Produtos', icon: Briefcase },
 ];
 
 export default function VacinasPage() {
@@ -254,10 +500,10 @@ export default function VacinasPage() {
                     {/* Hero Section */}
                     <div className="text-center mb-12">
                         <span className="inline-block py-2 px-4 rounded-full bg-brand-light text-brand-medium-blue text-sm font-bold tracking-wide mb-4 uppercase">
-                            Catálogo de Imunização
+                            Catálogo de Imunização e Serviços
                         </span>
                         <h1 className="text-4xl md:text-5xl font-bold text-brand-dark-blue mb-4">
-                            Conheça nossas <span className="text-brand-blue">Vacinas</span>
+                            Conheça nossas <span className="text-brand-blue">Vacinas e Serviços</span>
                         </h1>
                         <p className="text-lg text-brand-dark-gray max-w-2xl mx-auto">
                             Proteção completa para todas as fases da vida. Descubra as vacinas disponíveis em nossa unidade.
@@ -317,9 +563,16 @@ export default function VacinasPage() {
                                     {vacina.descricao}
                                 </p>
                                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
-                                    <span className="text-xs font-semibold text-brand-blue bg-brand-light px-3 py-1 rounded-full">
-                                        {vacina.indicacao}
-                                    </span>
+                                    <div className="flex flex-col">
+                                        <span className="text-xs font-semibold text-brand-blue bg-brand-light px-3 py-1 rounded-full w-fit mb-1">
+                                            {vacina.indicacao}
+                                        </span>
+                                        {vacina.preco && (
+                                            <span className="text-sm font-bold text-brand-dark-blue ml-1">
+                                                {vacina.preco}
+                                            </span>
+                                        )}
+                                    </div>
                                     <a
                                         href={`https://wa.me/5548991895758?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre a vacina ${vacina.nome}.`)}`}
                                         target="_blank"

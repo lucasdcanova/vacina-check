@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail } from 'lucide-react';
+import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail, ArrowRight } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
 
 export default function LandingPage() {
@@ -60,7 +60,16 @@ export default function LandingPage() {
               Unidade Florianópolis Centro
             </span>
             <h1 className="text-4xl md:text-6xl font-bold text-brand-dark-blue mb-6 md:mb-8 tracking-tight leading-tight">
-              Prevenção é um ato de <span className="text-brand-blue">amor</span>.
+              Prevenção é um ato de <motion.span
+                className="text-brand-blue inline-block"
+                animate={{ scale: [1, 1.1, 1, 1.1, 1, 1] }}
+                transition={{
+                  duration: 1.5,
+                  times: [0, 0.1, 0.2, 0.3, 0.4, 1],
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >amor</motion.span>.
             </h1>
             <p className="text-lg md:text-xl text-brand-dark-gray mb-8 md:mb-10 leading-relaxed font-light">
               A maior rede de clínicas de vacinas do Brasil. <br className="hidden md:block" />
@@ -89,7 +98,7 @@ export default function LandingPage() {
                 className="w-full sm:w-auto px-8 py-4 rounded-full font-medium text-brand-medium-blue border border-brand-medium-blue/20 hover:bg-brand-light transition-all flex items-center justify-center gap-2"
               >
                 <Syringe className="w-5 h-5" />
-                Conhecer Vacinas
+                Conhecer Vacinas e Serviços
               </a>
             </div>
           </motion.div>
@@ -126,6 +135,10 @@ export default function LandingPage() {
               <p className="text-brand-dark-gray text-sm leading-relaxed">
                 Ambiente acolhedor e lúdico para crianças.
               </p>
+              <a href="/equipe" className="inline-flex items-center gap-1 text-sm font-semibold text-brand-blue hover:text-brand-dark-blue transition-colors mt-4 group">
+                Conheça nossa equipe
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
             </div>
 
             <div id="contato">
