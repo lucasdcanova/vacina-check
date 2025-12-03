@@ -1,8 +1,7 @@
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
-import fs from 'fs';
 import path from 'path';
-import { File } from 'node:buffer';
+import fs from 'fs';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -110,9 +109,9 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
         `;
 
         // Upload do arquivo bruto (pdf ou imagem) para a OpenAI
-        const fileBuffer = Buffer.from(await file.arrayBuffer());
+        // Enviar o arquivo bruto (File recebido do formData) diretamente para a OpenAI
         const uploadedFile = await openai.files.create({
-            file: new File([fileBuffer], fileName, { type: contentType }),
+            file,
             purpose: 'vision'
         });
 
@@ -181,6 +180,10 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
 
     } catch (error) {
         console.error("Erro na API de análise:", error);
-        return NextResponse.json({ error: 'Erro interno do servidor', details: error.message }, { status: 500 });
+        return NextResponse.json({
+            error: 'Erro interno do servidor',
+            details: error?.message || 'Erro desconhecido',
+            stack: error?.stack || null
+        }, { status: 500 });
     }
 }
