@@ -162,7 +162,8 @@ export default function VacinaCheck() {
     dataNascimento: '',
     sexo: '',
     gestante: false,
-    semanasGestacao: ''
+    semanasGestacao: '',
+    carteiraAdulta: false
   });
   const [imagemCarteira, setImagemCarteira] = useState(null);
   const [vacinasReconhecidas, setVacinasReconhecidas] = useState([]);
@@ -201,7 +202,8 @@ export default function VacinaCheck() {
             idade: calcularIdadeEmMeses(dadosPaciente.dataNascimento) + ' meses',
             situacao: dadosPaciente.sexo,
             gestante: dadosPaciente.gestante,
-            semanasGestacao: dadosPaciente.semanasGestacao
+            semanasGestacao: dadosPaciente.semanasGestacao,
+            carteiraAdulta: dadosPaciente.carteiraAdulta
           }
         })
       });
@@ -628,6 +630,22 @@ export default function VacinaCheck() {
                       )}
                     </div>
                   )}
+                </div>
+
+
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={dadosPaciente.carteiraAdulta}
+                      onChange={(e) => setDadosPaciente({ ...dadosPaciente, carteiraAdulta: e.target.checked })}
+                      className="w-5 h-5 rounded border-slate-300 text-brand-blue focus:ring-brand-blue"
+                    />
+                    <div>
+                      <span className="block text-brand-dark-gray font-medium">Carteira de vacinação apenas da vida adulta</span>
+                      <span className="block text-xs text-brand-medium-gray mt-1">Marque se esta carteirinha não contém registros da infância. O sistema irá focar nas vacinas de adulto.</span>
+                    </div>
+                  </label>
                 </div>
               </div>
 

@@ -69,6 +69,9 @@ export async function POST(req) {
       - Sexo: ${patientInfo?.situacao || 'Padrão'}
       - Gestante: ${patientInfo?.gestante ? 'SIM' : 'NÃO'}
       - Semanas de Gestação: ${patientInfo?.semanasGestacao || 'N/A'}
+      - Carteira de Adulto (apenas registros da vida adulta): ${patientInfo?.carteiraAdulta ? 'SIM' : 'NÃO'}
+
+      IMPORTANTE: Se 'Carteira de Adulto' for SIM, considere que o paciente NÃO tem registros da infância nesta carteirinha. NÃO liste vacinas infantis (BCG, Penta, Polio, Rotavírus, etc) como "vacinasFaltantes", pois assume-se que foram tomadas ou não constam neste documento. Foque EXCLUSIVAMENTE nas vacinas do calendário adulto/idoso/gestante e reforços necessários (ex: dT, Hepatite B, Febre Amarela, Influenza, Covid-19).
 
       IMPORTANTE: Se a paciente for GESTANTE, verifique rigorosamente as vacinas indicadas para a semana gestacional atual dela (ex: dTpa a partir da 20ª semana, Influenza em qualquer fase, etc). Indique claramente nas "proximasDoses" as vacinas que ela precisa tomar AGORA ou em breve devido à gravidez.
       
