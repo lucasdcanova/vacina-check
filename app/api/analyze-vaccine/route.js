@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { File } from 'node:buffer';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -12,6 +13,7 @@ const openai = new OpenAI({
 
 // Ordem de modelos a tentar (sem fallback para famílias anteriores)
 const MODEL_CHAIN = ['gpt-5.1', 'gpt-5'];
+const MAX_OUTPUT_TOKENS = 8000; // liberar mais tokens para relatórios longos (PDFs grandes)
 
 const formatErrorDetail = (error) => {
     if (error?.response?.data) {
@@ -23,18 +25,28 @@ const formatErrorDetail = (error) => {
     return 'Erro desconhecido';
 };
 
+export const maxDuration = 300; // permitir uploads/processamentos maiores em edge/node
+
 export async function POST(req) {
     try {
-        const { image, images, patientInfo } = await req.json();
+        const formData = await req.formData();
+        const file = formData.get('file');
+        const patientInfoRaw = formData.get('patientInfo');
 
-        // Normalizar entrada para array de imagens (todas as páginas do PDF convertidas em imagem)
-        const imagesToAnalyze = Array.isArray(images)
-            ? images.filter(Boolean)
-            : (image ? [image] : []);
-
-        if (!imagesToAnalyze.length) {
-            return NextResponse.json({ error: 'Imagem ou PDF não fornecido' }, { status: 400 });
+        if (!(file instanceof File)) {
+            return NextResponse.json({ error: 'Arquivo não fornecido' }, { status: 400 });
         }
+
+        let patientInfo = {};
+        try {
+            patientInfo = patientInfoRaw ? JSON.parse(patientInfoRaw) : {};
+        } catch (err) {
+            console.warn('Não foi possível fazer parse de patientInfo:', err);
+        }
+
+        const fileName = file.name || 'documento.pdf';
+        const contentType = file.type || 'application/octet-stream';
+        const isPdf = contentType.includes('pdf') || fileName.toLowerCase().endsWith('.pdf');
 
         // Read the reference markdown files
         const publicDir = path.join(process.cwd(), 'public');
@@ -49,13 +61,13 @@ export async function POST(req) {
         let combinedContext = '';
 
         try {
-            for (const file of files) {
-                const filePath = path.join(publicDir, file);
+            for (const ref of files) {
+                const filePath = path.join(publicDir, ref);
                 if (fs.existsSync(filePath)) {
                     const content = fs.readFileSync(filePath, 'utf8');
-                    combinedContext += `\n\n--- CONTEÚDO DO ARQUIVO ${file} ---\n${content}`;
+                    combinedContext += `\n\n--- CONTEÚDO DO ARQUIVO ${ref} ---\n${content}`;
                 } else {
-                    console.warn(`Arquivo de referência não encontrado: ${file}`);
+                    console.warn(`Arquivo de referência não encontrado: ${ref}`);
                 }
             }
         } catch (error) {
@@ -63,63 +75,60 @@ export async function POST(req) {
         }
 
         const systemPrompt = `
-      Você é um especialista em imunização e saúde pública brasileira.
-      Sua tarefa é analisar imagens de carteirinhas de vacinação e identificar as vacinas tomadas, comparando com o calendário oficial.
+Você é um especialista em imunização e saúde pública brasileira.
+Sua tarefa é analisar carteirinhas de vacinação (imagem ou PDF) e identificar as vacinas tomadas, comparando com o calendário oficial.
 
-      Use os seguintes documentos como referência principal para o calendário vacinal (SUS, SBIm, Gestantes, Crianças, etc):
-      ${combinedContext}
+Use os seguintes documentos como referência principal para o calendário vacinal (SUS, SBIm, Gestantes, Crianças, etc):
+${combinedContext}
 
-      Analise a imagem fornecida e os dados do paciente:
-      - Idade: ${patientInfo?.idade || 'Não informada'}
-      - Sexo: ${patientInfo?.situacao || 'Padrão'}
-      - Gestante: ${patientInfo?.gestante ? 'SIM' : 'NÃO'}
-      - Semanas de Gestação: ${patientInfo?.semanasGestacao || 'N/A'}
-      - Carteira de Adulto (apenas registros da vida adulta): ${patientInfo?.carteiraAdulta ? 'SIM' : 'NÃO'}
+Analise o documento fornecido e os dados do paciente:
+- Idade: ${patientInfo?.idade || 'Não informada'}
+- Sexo: ${patientInfo?.situacao || 'Padrão'}
+- Gestante: ${patientInfo?.gestante ? 'SIM' : 'NÃO'}
+- Semanas de Gestação: ${patientInfo?.semanasGestacao || 'N/A'}
+- Carteira de Adulto (apenas registros da vida adulta): ${patientInfo?.carteiraAdulta ? 'SIM' : 'NÃO'}
 
-      IMPORTANTE: Se 'Carteira de Adulto' for SIM, considere que o paciente NÃO tem registros da infância nesta carteirinha. NÃO liste vacinas infantis (BCG, Penta, Polio, Rotavírus, etc) como "vacinasFaltantes", pois assume-se que foram tomadas ou não constam neste documento. Foque EXCLUSIVAMENTE nas vacinas do calendário adulto/idoso/gestante e reforços necessários (ex: dT, Hepatite B, Febre Amarela, Influenza, Covid-19).
+IMPORTANTE: Se 'Carteira de Adulto' for SIM, considere que o paciente NÃO tem registros da infância nesta carteirinha. NÃO liste vacinas infantis (BCG, Penta, Polio, Rotavírus, etc) como "vacinasFaltantes", pois assume-se que foram tomadas ou não constam neste documento. Foque EXCLUSIVAMENTE nas vacinas do calendário adulto/idoso/gestante e reforços necessários (ex: dT, Hepatite B, Febre Amarela, Influenza, Covid-19).
 
-      IMPORTANTE: Se a paciente for GESTANTE, verifique rigorosamente as vacinas indicadas para a semana gestacional atual dela (ex: dTpa a partir da 20ª semana, Influenza em qualquer fase, etc). Indique claramente nas "proximasDoses" as vacinas que ela precisa tomar AGORA ou em breve devido à gravidez.
+IMPORTANTE: Se a paciente for GESTANTE, verifique rigorosamente as vacinas indicadas para a semana gestacional atual dela (ex: dTpa a partir da 20ª semana, Influenza em qualquer fase, etc). Indique claramente nas "proximasDoses" as vacinas que ela precisa tomar AGORA ou em breve devido à gravidez.
       
-      Retorne um JSON estrito com a seguinte estrutura:
-      {
-        "vacinasTomadas": [
-          { "nome": "Nome da Vacina", "data": "DD/MM/AAAA", "lote": "Lote se visível", "dose": "1ª dose, 2ª dose, etc" }
-        ],
-        "vacinasFaltantes": [
-          { "nome": "Nome da Vacina", "motivo": "Não encontrada na carteirinha e indicada para a idade/situação" }
-        ],
-        "proximasDoses": [
-          { "nome": "Nome da Vacina", "dataPrevista": "Data aproximada ou 'Imediato'", "indicacao": "Motivo da indicação (ex: Gestante 20+ semanas)" }
-        ],
-        "observacoes": "Texto geral sobre a situação vacinal do paciente e recomendações."
-      }
+Retorne um JSON estrito com a seguinte estrutura:
+{
+  "vacinasTomadas": [
+    { "nome": "Nome da Vacina", "data": "DD/MM/AAAA", "lote": "Lote se visível", "dose": "1ª dose, 2ª dose, etc" }
+  ],
+  "vacinasFaltantes": [
+    { "nome": "Nome da Vacina", "motivo": "Não encontrada na carteirinha e indicada para a idade/situação" }
+  ],
+  "proximasDoses": [
+    { "nome": "Nome da Vacina", "dataPrevista": "Data aproximada ou 'Imediato'", "indicacao": "Motivo da indicação (ex: Gestante 20+ semanas)" }
+  ],
+  "observacoes": "Texto geral sobre a situação vacinal do paciente e recomendações."
+}
 
-      Se a imagem não for uma carteirinha de vacinação ou estiver ilegível, retorne um erro no campo observacoes.
-    `;
+Se o documento não for uma carteirinha de vacinação ou estiver ilegível, retorne um erro no campo observacoes.
+        `;
 
-        // Construir conteúdo da mensagem do usuário com múltiplas imagens
-        const userContent = [
-            { type: "text", text: "Analise esta carteirinha de vacinação (pode conter múltiplas páginas) e forneça o relatório completo em JSON." }
-        ];
-
-        imagesToAnalyze.forEach(img => {
-            userContent.push({ type: "image_url", image_url: { url: img } });
+        // Upload do arquivo bruto (pdf ou imagem) para a OpenAI
+        const fileBuffer = Buffer.from(await file.arrayBuffer());
+        const uploadedFile = await openai.files.create({
+            file: new File([fileBuffer], fileName, { type: contentType }),
+            purpose: 'vision'
         });
 
-        const generateReport = async (model) => openai.chat.completions.create({
+        const generateReport = async (model) => openai.responses.create({
             model,
-            messages: [
-                {
-                    role: "system",
-                    content: systemPrompt
-                },
+            input: [
                 {
                     role: "user",
-                    content: userContent
+                    content: [
+                        { type: "input_text", text: systemPrompt },
+                        { type: "input_file", file_id: uploadedFile.id }
+                    ]
                 }
             ],
-            max_completion_tokens: 4096,
-            response_format: { type: "json_object" }
+            response_format: { type: "json_object" },
+            max_output_tokens: MAX_OUTPUT_TOKENS
         });
 
         let response;
@@ -145,15 +154,28 @@ export async function POST(req) {
             }, { status: 502 });
         }
 
-        const content = response.choices[0].message.content;
+        // Extrair texto da resposta do Responses API
+        const outputContent = response.output?.[0]?.content?.[0];
+        const content = outputContent?.type === 'output_text' ? outputContent.text : null;
+
+        if (!content) {
+            console.error("Resposta da IA vazia ou em formato inesperado:", response);
+            return NextResponse.json({ error: 'Resposta da IA vazia ou inválida' }, { status: 500 });
+        }
 
         try {
             const jsonResponse = JSON.parse(content);
             jsonResponse.modeloUtilizado = usedModel;
             jsonResponse.cadeiaModelosTentados = MODEL_CHAIN;
+            jsonResponse.arquivoEnviado = {
+                nome: fileName,
+                tipo: contentType,
+                pdf: isPdf,
+                fileId: uploadedFile.id
+            };
             return NextResponse.json(jsonResponse);
         } catch (e) {
-            console.error("Erro ao fazer parse do JSON do OpenAI:", e);
+            console.error("Erro ao fazer parse do JSON do OpenAI:", e, content);
             return NextResponse.json({ error: 'Erro ao processar resposta da IA', raw: content }, { status: 500 });
         }
 

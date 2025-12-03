@@ -191,30 +191,38 @@ export default function VacinaCheck() {
   };
 
   // Analisar com IA
-  const analisarComIA = async (base64Images) => {
+  const analisarComIA = async (file) => {
     try {
-      const imagens = Array.isArray(base64Images) ? base64Images.filter(Boolean) : [base64Images].filter(Boolean);
+      if (!file) throw new Error('Nenhum arquivo selecionado');
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('patientInfo', JSON.stringify({
+        idade: calcularIdadeEmMeses(dadosPaciente.dataNascimento) + ' meses',
+        situacao: dadosPaciente.sexo,
+        gestante: dadosPaciente.gestante,
+        semanasGestacao: dadosPaciente.semanasGestacao,
+        carteiraAdulta: dadosPaciente.carteiraAdulta
+      }));
 
       const response = await fetch('/api/analyze-vaccine', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          images: imagens,
-          patientInfo: {
-            idade: calcularIdadeEmMeses(dadosPaciente.dataNascimento) + ' meses',
-            situacao: dadosPaciente.sexo,
-            gestante: dadosPaciente.gestante,
-            semanasGestacao: dadosPaciente.semanasGestacao,
-            carteiraAdulta: dadosPaciente.carteiraAdulta
-          }
-        })
+        body: formData
       });
 
       let payload = null;
       try {
-        payload = await response.json();
+        const text = await response.text();
+        try {
+          payload = JSON.parse(text);
+        } catch (e) {
+          console.error('Erro ao fazer parse do JSON:', e);
+          console.error('Resposta bruta:', text);
+          throw new Error(`Erro no servidor: ${response.status} ${response.statusText}`);
+        }
       } catch (parseError) {
         console.error('Erro ao ler resposta da API:', parseError);
+        throw parseError; // Re-throw to be caught below
       }
 
       if (!response.ok) {
@@ -326,42 +334,20 @@ export default function VacinaCheck() {
       setCarregando(true);
 
       try {
-        const imageDataUrls = [];
-
-        if (file.type === 'application/pdf') {
-          // Importar dinamicamente para evitar erros de SSR
-          const pdfjsLib = await import('pdfjs-dist');
-          pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
-          const arrayBuffer = await file.arrayBuffer();
-          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-
-          // Renderizar todas as páginas para garantir que o PDF completo seja enviado
-          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-            const page = await pdf.getPage(pageNum);
-            const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 para melhor legibilidade
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            await page.render({ canvasContext: context, viewport }).promise;
-            imageDataUrls.push(canvas.toDataURL('image/jpeg', 0.85));
-          }
-        } else {
-          // É imagem
-          const imageDataUrl = await new Promise((resolve) => {
+        // Preview rápido apenas para imagens; PDF fica com placeholder
+        if (file.type.startsWith('image/')) {
+          const preview = await new Promise((resolve) => {
             const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
+            reader.onload = (ev) => resolve(ev.target.result);
             reader.readAsDataURL(file);
           });
-          imageDataUrls.push(imageDataUrl);
+          setImagemCarteira(preview);
+        } else {
+          setImagemCarteira(null);
         }
 
-        setImagemCarteira(imageDataUrls[0] || null);
-
-        // Analisar com IA (enviando todas as páginas/imagens)
-        const resultado = await analisarComIA(imageDataUrls);
+        // Analisar com IA enviando o arquivo bruto (PDF ou imagem)
+        const resultado = await analisarComIA(file);
 
         if (resultado) {
           setResultadoIA(resultado);
@@ -411,7 +397,7 @@ export default function VacinaCheck() {
         }
       } catch (error) {
         console.error("Erro ao processar arquivo:", error);
-        alert("Erro ao processar o arquivo. Tente novamente.");
+        alert(error?.message || "Erro ao processar o arquivo. Tente novamente.");
       } finally {
         setCarregando(false);
       }
@@ -727,19 +713,12 @@ export default function VacinaCheck() {
                   Imagem Carregada
                 </h3>
 
-                {imagemCarteira ? (
+                {imagemCarteira && (
                   <img
                     src={imagemCarteira}
                     alt="Carteira de vacinação"
                     className="w-full rounded-xl border border-slate-200 mb-4"
                   />
-                ) : (
-                  <div className="w-full h-48 bg-slate-50 rounded-xl border border-slate-200 mb-4 flex flex-col items-center justify-center text-brand-medium-gray">
-                    <svg className="w-12 h-12 mb-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    <span className="font-medium">Arquivo PDF Carregado</span>
-                  </div>
                 )}
 
                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
