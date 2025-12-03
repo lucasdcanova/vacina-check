@@ -226,9 +226,14 @@ export default function VacinaCheck() {
       }
 
       if (!response.ok) {
-        const detalhes = Array.isArray(payload?.detalhes)
-          ? payload.detalhes.map(d => `${d.model}: ${d.details}`).join('; ')
-          : null;
+        let detalhes = null;
+        if (Array.isArray(payload?.detalhes)) {
+          detalhes = payload.detalhes.map(d => `${d.model}: ${d.details}`).join('; ');
+        } else if (payload?.detalhes) {
+          detalhes = typeof payload.detalhes === 'string'
+            ? payload.detalhes
+            : JSON.stringify(payload.detalhes);
+        }
         const message = payload?.error || detalhes || 'Falha na análise';
         throw new Error(detalhes ? `${message} | Detalhes: ${detalhes}` : message);
       }

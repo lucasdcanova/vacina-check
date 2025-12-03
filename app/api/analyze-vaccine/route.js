@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
+import { toFile } from 'openai/uploads';
 
 export const runtime = 'nodejs';
 export const maxBodySize = '100mb';
@@ -114,8 +115,10 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
         // Upload do arquivo bruto (pdf ou imagem) para a OpenAI
         let uploadedFile;
         try {
+            const fileBuffer = Buffer.from(await file.arrayBuffer());
+            const uploadable = await toFile(fileBuffer, fileName, { contentType });
             uploadedFile = await openai.files.create({
-                file,
+                file: uploadable,
                 purpose: 'vision'
             });
         } catch (uploadError) {
