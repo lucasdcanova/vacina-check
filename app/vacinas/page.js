@@ -12,7 +12,6 @@ const VACINAS = [
         descricao: 'Previne as formas graves de tuberculose, principalmente miliar e meníngea.',
         indicacao: 'Ao nascer',
         categoria: 'Bebês',
-        preco: 'R$ 150,00',
         icon: Baby
     },
     {
@@ -21,7 +20,6 @@ const VACINAS = [
         descricao: 'Previne a infecção pelo vírus da hepatite B.',
         indicacao: 'Ao nascer, 2, 4 e 6 meses',
         categoria: 'Todos',
-        preco: 'R$ 92,00',
         icon: Shield
     },
     {
@@ -30,7 +28,6 @@ const VACINAS = [
         descricao: 'Protege contra difteria, tétano, coqueluche, hepatite B e Haemophilus influenzae tipo b.',
         indicacao: '2, 4 e 6 meses',
         categoria: 'Bebês',
-        preco: 'R$ 350,00',
         icon: Baby
     },
     {
@@ -39,7 +36,6 @@ const VACINAS = [
         descricao: 'Protege contra difteria, tétano, coqueluche, hepatite B, poliomielite e Haemophilus influenzae tipo b.',
         indicacao: '2 e 6 meses',
         categoria: 'Bebês',
-        preco: 'R$ 380,00',
         icon: Baby
     },
     {
@@ -48,7 +44,6 @@ const VACINAS = [
         descricao: 'Previne a paralisia infantil (poliomielite).',
         indicacao: '2, 4 e 6 meses',
         categoria: 'Bebês',
-        preco: 'Consulte',
         icon: Baby
     },
     {
@@ -57,7 +52,6 @@ const VACINAS = [
         descricao: 'Previne doenças invasivas e otite média aguda causadas por Streptococcus pneumoniae.',
         indicacao: '2, 4 e 12 meses',
         categoria: 'Bebês',
-        preco: 'Consulte',
         icon: Baby
     },
     {
@@ -66,7 +60,6 @@ const VACINAS = [
         descricao: 'Proteção ampliada contra 13 sorotipos de pneumococos.',
         indicacao: 'A partir de 2 meses',
         categoria: 'Bebês',
-        preco: 'R$ 370,00',
         icon: Baby
     },
     {
@@ -75,7 +68,6 @@ const VACINAS = [
         descricao: 'Proteção ampliada contra 15 sorotipos de pneumococos.',
         indicacao: 'A partir de 2 meses',
         categoria: 'Bebês',
-        preco: 'R$ 399,00',
         icon: Baby
     },
     {
@@ -84,7 +76,6 @@ const VACINAS = [
         descricao: 'Proteção mais ampla disponível contra pneumococos.',
         indicacao: 'Adultos',
         categoria: 'Adultos',
-        preco: 'R$ 590,00',
         icon: User
     },
     {
@@ -93,7 +84,6 @@ const VACINAS = [
         descricao: 'Previne diarreia grave causada por rotavírus.',
         indicacao: '2 e 4 meses',
         categoria: 'Bebês',
-        preco: 'R$ 320,00',
         icon: Baby
     },
     {
@@ -102,7 +92,6 @@ const VACINAS = [
         descricao: 'Previne doença meningocócica causada pelo sorogrupo C.',
         indicacao: '3, 5 e 12 meses',
         categoria: 'Bebês',
-        preco: 'R$ 297,00',
         icon: Baby
     },
     {
@@ -111,7 +100,6 @@ const VACINAS = [
         descricao: 'Previne meningite e infecções generalizadas causadas pelos meningococos A, C, W e Y.',
         indicacao: '3, 5, 12 meses e adolescentes',
         categoria: 'Todos',
-        preco: 'R$ 489,00',
         icon: Baby
     },
     {
@@ -120,7 +108,6 @@ const VACINAS = [
         descricao: 'Previne meningite e infecções generalizadas causadas pelo meningococo B.',
         indicacao: '3, 5 e 12 meses',
         categoria: 'Bebês',
-        preco: 'R$ 784,00',
         icon: Baby
     },
     {
@@ -129,7 +116,6 @@ const VACINAS = [
         descricao: 'Previne a febre amarela.',
         indicacao: '9 meses e 4 anos',
         categoria: 'Todos',
-        preco: 'R$ 192,00',
         icon: Plane
     },
     {
@@ -138,7 +124,6 @@ const VACINAS = [
         descricao: 'Previne sarampo, caxumba e rubéola.',
         indicacao: '12 meses',
         categoria: 'Todos',
-        preco: 'R$ 125,00',
         icon: Shield
     },
     {
@@ -147,7 +132,6 @@ const VACINAS = [
         descricao: 'Previne sarampo, caxumba, rubéola e varicela.',
         indicacao: '15 meses',
         categoria: 'Bebês',
-        preco: 'R$ 345,00',
         icon: Baby
     },
     {
@@ -156,7 +140,6 @@ const VACINAS = [
         descricao: 'Previne a varicela (catapora).',
         indicacao: '15 meses e 4 anos',
         categoria: 'Crianças',
-        preco: 'R$ 240,00',
         icon: Baby
     },
     {
@@ -165,7 +148,6 @@ const VACINAS = [
         descricao: 'Previne a infecção pelo vírus da hepatite A.',
         indicacao: '15 meses',
         categoria: 'Crianças',
-        preco: 'R$ 175,00',
         icon: Baby
     },
     {
@@ -174,7 +156,6 @@ const VACINAS = [
         descricao: 'Previne difteria, tétano e coqueluche. Essencial para gestantes.',
         indicacao: 'Gestantes a partir de 20 semanas',
         categoria: 'Gestantes',
-        preco: 'R$ 289,00',
         icon: Heart
     },
     {
@@ -183,7 +164,6 @@ const VACINAS = [
         descricao: 'Previne difteria, tétano, coqueluche e poliomielite.',
         indicacao: 'Reforço',
         categoria: 'Crianças',
-        preco: 'R$ 289,00',
         icon: Shield
     },
     {
@@ -192,7 +172,6 @@ const VACINAS = [
         descricao: 'Previne a gripe e suas complicações. Cepas atualizadas.',
         indicacao: 'Anual',
         categoria: 'Todos',
-        preco: 'R$ 110,00',
         icon: Shield
     },
     {
@@ -201,7 +180,6 @@ const VACINAS = [
         descricao: 'Vacina da gripe com alta dose de antígeno, ideal para idosos.',
         indicacao: '60+ anos',
         categoria: 'Adultos',
-        preco: 'R$ 325,00',
         icon: User
     },
     {
@@ -210,7 +188,6 @@ const VACINAS = [
         descricao: 'Previne infecções pelo papilomavírus humano (4 tipos).',
         indicacao: '9 a 45 anos',
         categoria: 'Adolescentes',
-        preco: 'R$ 879,80',
         icon: User
     },
     {
@@ -219,7 +196,6 @@ const VACINAS = [
         descricao: 'Proteção ampliada contra 9 tipos de HPV.',
         indicacao: '9 a 45 anos',
         categoria: 'Adolescentes',
-        preco: 'R$ 999,00',
         icon: User
     },
     {
@@ -228,7 +204,6 @@ const VACINAS = [
         descricao: 'Previne o herpes zóster (cobreiro) e neuralgia pós-herpética.',
         indicacao: '50+ anos',
         categoria: 'Adultos',
-        preco: 'R$ 1.089,00',
         icon: User
     },
     {
@@ -237,7 +212,6 @@ const VACINAS = [
         descricao: 'Previne a dengue causada pelos quatro sorotipos do vírus.',
         indicacao: '4 a 60 anos',
         categoria: 'Todos',
-        preco: 'R$ 310,20',
         icon: Shield
     },
     {
@@ -246,7 +220,6 @@ const VACINAS = [
         descricao: 'Previne a febre tifoide.',
         indicacao: 'Viajantes',
         categoria: 'Todos',
-        preco: 'R$ 149,00',
         icon: Plane
     },
     {
@@ -255,7 +228,6 @@ const VACINAS = [
         descricao: 'Vacina contra Vírus Sincicial Respiratório para idosos.',
         indicacao: '60+ anos',
         categoria: 'Adultos',
-        preco: 'R$ 1.580,00',
         icon: User
     },
     {
@@ -264,7 +236,6 @@ const VACINAS = [
         descricao: 'Vacina contra VSR para gestantes e idosos.',
         indicacao: 'Gestantes e 60+',
         categoria: 'Gestantes',
-        preco: 'R$ 1.848,00',
         icon: Heart
     },
     {
@@ -273,7 +244,6 @@ const VACINAS = [
         descricao: 'Anticorpo monoclonal para prevenção de VSR em bebês.',
         indicacao: 'Recém-nascidos',
         categoria: 'Bebês',
-        preco: 'R$ 3.600,00',
         icon: Baby
     },
     {
@@ -282,7 +252,6 @@ const VACINAS = [
         descricao: 'Imunoglobulina anti-D para gestantes Rh negativo.',
         indicacao: 'Gestantes',
         categoria: 'Gestantes',
-        preco: 'R$ 519,20',
         icon: Heart
     },
 
@@ -293,7 +262,6 @@ const VACINAS = [
         descricao: 'Colocação de brincos com técnica humanizada e estéril.',
         indicacao: 'Todas as idades',
         categoria: 'Serviços',
-        preco: 'R$ 30,00',
         icon: Heart
     },
     {
@@ -302,7 +270,6 @@ const VACINAS = [
         descricao: 'Procedimento completo de aplicação.',
         indicacao: 'Todas as idades',
         categoria: 'Serviços',
-        preco: 'R$ 180,00',
         icon: Heart
     },
     {
@@ -311,7 +278,6 @@ const VACINAS = [
         descricao: 'Atendimento domiciliar para vacinação e procedimentos.',
         indicacao: 'Sob agendamento',
         categoria: 'Serviços',
-        preco: 'R$ 30,00',
         icon: Briefcase
     },
     {
@@ -320,7 +286,6 @@ const VACINAS = [
         descricao: 'Tratamento com laser para feridas e inflamações.',
         indicacao: 'Sob avaliação',
         categoria: 'Serviços',
-        preco: 'Consulte',
         icon: Syringe
     },
     {
@@ -329,7 +294,6 @@ const VACINAS = [
         descricao: 'Administração de soro e medicamentos endovenosos.',
         indicacao: 'Sob prescrição',
         categoria: 'Serviços',
-        preco: 'Consulte',
         icon: Syringe
     },
 
@@ -340,7 +304,6 @@ const VACINAS = [
         descricao: 'Aplicação de medicamentos prescritos (IM/SC).',
         indicacao: 'Com receita',
         categoria: 'Injetáveis',
-        preco: 'R$ 30,00',
         icon: Syringe
     },
     {
@@ -349,7 +312,6 @@ const VACINAS = [
         descricao: 'Reposição vitamínica injetável.',
         indicacao: 'Sob prescrição',
         categoria: 'Injetáveis',
-        preco: 'R$ 20,00',
         icon: Syringe
     },
 
@@ -360,7 +322,6 @@ const VACINAS = [
         descricao: 'Triagem neonatal para diversas doenças.',
         indicacao: 'Recém-nascidos',
         categoria: 'Exames',
-        preco: 'R$ 89,90',
         icon: Baby
     },
     {
@@ -369,7 +330,6 @@ const VACINAS = [
         descricao: 'Teste rápido de antígeno para Covid-19.',
         indicacao: 'Sintomáticos',
         categoria: 'Exames',
-        preco: 'R$ 30,00',
         icon: Shield
     },
     {
@@ -378,7 +338,6 @@ const VACINAS = [
         descricao: 'Exame para avaliação de colesterol e triglicerídeos.',
         indicacao: 'Jejum necessário',
         categoria: 'Exames',
-        preco: 'R$ 89,90',
         icon: Shield
     },
     {
@@ -387,7 +346,6 @@ const VACINAS = [
         descricao: 'Avaliação da saúde dos rins.',
         indicacao: 'Todos',
         categoria: 'Exames',
-        preco: 'R$ 99,90',
         icon: Shield
     },
     {
@@ -396,7 +354,6 @@ const VACINAS = [
         descricao: 'Controle de diabetes e glicemia.',
         indicacao: 'Todos',
         categoria: 'Exames',
-        preco: 'R$ 59,90',
         icon: Shield
     },
     {
@@ -405,7 +362,6 @@ const VACINAS = [
         descricao: 'Teste de gravidez sanguíneo.',
         indicacao: 'Suspeita de gravidez',
         categoria: 'Exames',
-        preco: 'R$ 59,90',
         icon: Heart
     },
     {
@@ -414,7 +370,6 @@ const VACINAS = [
         descricao: 'Diagnóstico rápido de Dengue.',
         indicacao: 'Sintomáticos',
         categoria: 'Exames',
-        preco: 'R$ 59,90',
         icon: Shield
     },
 
@@ -425,7 +380,6 @@ const VACINAS = [
         descricao: 'Aparelho para alívio da dor na injeção.',
         indicacao: 'Uso local',
         categoria: 'Produtos',
-        preco: 'R$ 30,00',
         icon: Baby
     },
     {
@@ -434,7 +388,6 @@ const VACINAS = [
         descricao: 'Compressas adesivas para alívio da febre.',
         indicacao: 'Uso local',
         categoria: 'Produtos',
-        preco: 'R$ 50,00',
         icon: Baby
     },
     {
@@ -443,7 +396,6 @@ const VACINAS = [
         descricao: 'Dispositivo para lavagem nasal.',
         indicacao: 'Uso nasal',
         categoria: 'Produtos',
-        preco: 'R$ 50,00',
         icon: Baby
     },
     {
@@ -452,7 +404,6 @@ const VACINAS = [
         descricao: 'Par de brincos estéreis para perfuração.',
         indicacao: 'Uso auricular',
         categoria: 'Produtos',
-        preco: 'R$ 65,00',
         icon: Heart
     }
 ];
@@ -567,11 +518,6 @@ export default function VacinasPage() {
                                         <span className="text-xs font-semibold text-brand-blue bg-brand-light px-3 py-1 rounded-full w-fit mb-1">
                                             {vacina.indicacao}
                                         </span>
-                                        {vacina.preco && (
-                                            <span className="text-sm font-bold text-brand-dark-blue ml-1">
-                                                {vacina.preco}
-                                            </span>
-                                        )}
                                     </div>
                                     <a
                                         href={`https://wa.me/5548991895758?text=${encodeURIComponent(`Olá! Gostaria de saber mais sobre a vacina ${vacina.nome}.`)}`}
