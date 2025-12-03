@@ -367,13 +367,40 @@ export default function VacinaCheck() {
           }));
 
           setVacinasReconhecidas(vacinas);
+          setVacinasConfirmadas(vacinas);
           setTextoOCR(resultado.observacoes || "Análise realizada via IA");
+
+          // Gerar análise automaticamente e pular etapa de confirmação
+          const analiseObj = {
+            emDia: vacinas.map(v => ({
+              ...v,
+              status: 'em_dia',
+              idade: v.data || 'Data não ident.'
+            })),
+            atrasadas: resultado.vacinasFaltantes.map(v => ({
+              nome: v.nome,
+              dose: 'Pendente',
+              status: 'atrasada',
+              idade: 'Atrasada',
+              doencas: v.motivo
+            })),
+            proximas: resultado.proximasDoses.map(v => ({
+              nome: v.nome,
+              dose: v.indicacao || 'Próxima dose',
+              status: 'proxima',
+              idade: v.dataPrevista,
+              doencas: v.indicacao
+            })),
+            percentualCompleto: Math.min(100, Math.round((vacinas.length / (vacinas.length + resultado.vacinasFaltantes.length)) * 100)) || 0
+          };
+
+          setAnalise(analiseObj);
+          setStep('resultado');
         } else {
           // Fallback se falhar
           setTextoOCR("Falha na análise IA");
+          setStep('analise');
         }
-
-        setStep('analise');
       } catch (error) {
         console.error("Erro ao processar arquivo:", error);
         alert("Erro ao processar o arquivo. Tente novamente.");
