@@ -191,13 +191,15 @@ export default function VacinaCheck() {
   };
 
   // Analisar com IA
-  const analisarComIA = async (base64Image) => {
+  const analisarComIA = async (base64Images) => {
     try {
+      const imagens = Array.isArray(base64Images) ? base64Images.filter(Boolean) : [base64Images].filter(Boolean);
+
       const response = await fetch('/api/analyze-vaccine', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          image: base64Image,
+          images: imagens,
           patientInfo: {
             idade: calcularIdadeEmMeses(dadosPaciente.dataNascimento) + ' meses',
             situacao: dadosPaciente.sexo,
@@ -324,7 +326,7 @@ export default function VacinaCheck() {
       setCarregando(true);
 
       try {
-        let imageDataUrl = null;
+        const imageDataUrls = [];
 
         if (file.type === 'application/pdf') {
           // Importar dinamicamente para evitar erros de SSR
@@ -333,29 +335,33 @@ export default function VacinaCheck() {
 
           const arrayBuffer = await file.arrayBuffer();
           const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-          const page = await pdf.getPage(1); // Pega a primeira página
 
-          const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 para melhor qualidade
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+          // Renderizar todas as páginas para garantir que o PDF completo seja enviado
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const page = await pdf.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 para melhor legibilidade
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-          await page.render({ canvasContext: context, viewport: viewport }).promise;
-          imageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            await page.render({ canvasContext: context, viewport }).promise;
+            imageDataUrls.push(canvas.toDataURL('image/jpeg', 0.85));
+          }
         } else {
           // É imagem
-          imageDataUrl = await new Promise((resolve) => {
+          const imageDataUrl = await new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = (e) => resolve(e.target.result);
             reader.readAsDataURL(file);
           });
+          imageDataUrls.push(imageDataUrl);
         }
 
-        setImagemCarteira(imageDataUrl);
+        setImagemCarteira(imageDataUrls[0] || null);
 
-        // Analisar com IA
-        const resultado = await analisarComIA(imageDataUrl);
+        // Analisar com IA (enviando todas as páginas/imagens)
+        const resultado = await analisarComIA(imageDataUrls);
 
         if (resultado) {
           setResultadoIA(resultado);
@@ -721,12 +727,19 @@ export default function VacinaCheck() {
                   Imagem Carregada
                 </h3>
 
-                {imagemCarteira && (
+                {imagemCarteira ? (
                   <img
                     src={imagemCarteira}
                     alt="Carteira de vacinação"
                     className="w-full rounded-xl border border-slate-200 mb-4"
                   />
+                ) : (
+                  <div className="w-full h-48 bg-slate-50 rounded-xl border border-slate-200 mb-4 flex flex-col items-center justify-center text-brand-medium-gray">
+                    <svg className="w-12 h-12 mb-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    <span className="font-medium">Arquivo PDF Carregado</span>
+                  </div>
                 )}
 
                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">

@@ -25,10 +25,15 @@ const formatErrorDetail = (error) => {
 
 export async function POST(req) {
     try {
-        const { image, patientInfo } = await req.json();
+        const { image, images, patientInfo } = await req.json();
 
-        if (!image) {
-            return NextResponse.json({ error: 'Imagem não fornecida' }, { status: 400 });
+        // Normalizar entrada para array de imagens (todas as páginas do PDF convertidas em imagem)
+        const imagesToAnalyze = Array.isArray(images)
+            ? images.filter(Boolean)
+            : (image ? [image] : []);
+
+        if (!imagesToAnalyze.length) {
+            return NextResponse.json({ error: 'Imagem ou PDF não fornecido' }, { status: 400 });
         }
 
         // Read the reference markdown files
@@ -92,6 +97,15 @@ export async function POST(req) {
       Se a imagem não for uma carteirinha de vacinação ou estiver ilegível, retorne um erro no campo observacoes.
     `;
 
+        // Construir conteúdo da mensagem do usuário com múltiplas imagens
+        const userContent = [
+            { type: "text", text: "Analise esta carteirinha de vacinação (pode conter múltiplas páginas) e forneça o relatório completo em JSON." }
+        ];
+
+        imagesToAnalyze.forEach(img => {
+            userContent.push({ type: "image_url", image_url: { url: img } });
+        });
+
         const generateReport = async (model) => openai.chat.completions.create({
             model,
             messages: [
@@ -101,10 +115,7 @@ export async function POST(req) {
                 },
                 {
                     role: "user",
-                    content: [
-                        { type: "text", text: "Analise esta carteirinha de vacinação e forneça o relatório completo em JSON." },
-                        { type: "image_url", image_url: { url: image } }
-                    ]
+                    content: userContent
                 }
             ],
             max_completion_tokens: 4096,
