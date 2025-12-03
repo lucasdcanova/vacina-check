@@ -119,7 +119,8 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
             const uploadable = await toFile(fileBuffer, fileName, { contentType });
             uploadedFile = await openai.files.create({
                 file: uploadable,
-                purpose: 'vision'
+                // purpose 'assistants' aceita PDF e funciona com Responses API
+                purpose: 'assistants'
             });
         } catch (uploadError) {
             const details = formatErrorDetail(uploadError);
@@ -141,7 +142,7 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
                     ]
                 }
             ],
-            response_format: { type: "json_object" },
+            text: { format: { type: "json_object" } },
             max_output_tokens: MAX_OUTPUT_TOKENS
         });
 
