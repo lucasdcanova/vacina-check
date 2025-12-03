@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
 
+export const runtime = 'nodejs';
+export const maxBodySize = '100mb';
+
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     // Defina a organização/projeto se necessário para acessar GPT-5
@@ -109,11 +112,20 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
         `;
 
         // Upload do arquivo bruto (pdf ou imagem) para a OpenAI
-        // Enviar o arquivo bruto (File recebido do formData) diretamente para a OpenAI
-        const uploadedFile = await openai.files.create({
-            file,
-            purpose: 'vision'
-        });
+        let uploadedFile;
+        try {
+            uploadedFile = await openai.files.create({
+                file,
+                purpose: 'vision'
+            });
+        } catch (uploadError) {
+            const details = formatErrorDetail(uploadError);
+            console.error('Erro ao fazer upload do arquivo para OpenAI:', details);
+            return NextResponse.json({
+                error: 'Falha ao enviar arquivo para OpenAI',
+                detalhes: details
+            }, { status: 500 });
+        }
 
         const generateReport = async (model) => openai.responses.create({
             model,

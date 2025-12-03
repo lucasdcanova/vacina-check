@@ -218,7 +218,7 @@ export default function VacinaCheck() {
         } catch (e) {
           console.error('Erro ao fazer parse do JSON:', e);
           console.error('Resposta bruta:', text);
-          throw new Error(`Erro no servidor: ${response.status} ${response.statusText}`);
+          throw new Error(`Erro no servidor: ${response.status} ${response.statusText} | Corpo: ${text || '[vazio]'}`);
         }
       } catch (parseError) {
         console.error('Erro ao ler resposta da API:', parseError);
