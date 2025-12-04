@@ -45,14 +45,8 @@ export default function EquipePage() {
                         <div className="grid md:grid-cols-12 gap-0">
                             {/* Photo Section */}
                             <div className="md:col-span-5 bg-brand-light/30 relative min-h-[400px] md:min-h-full flex items-center justify-center p-8">
-                                {/* Placeholder for Photo */}
                                 <div className="w-64 h-64 rounded-full bg-brand-blue/10 border-4 border-white shadow-lg flex items-center justify-center relative overflow-hidden group">
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center text-brand-blue/40 group-hover:text-brand-blue/60 transition-colors">
-                                        <Heart className="w-16 h-16 mb-2" />
-                                        <span className="text-sm font-medium uppercase tracking-wider">Foto da Millena</span>
-                                    </div>
-                                    {/* Uncomment below when photo is available */}
-                                    {/* <img src="/equipe/millena.jpg" alt="Millena Ollermann" className="w-full h-full object-cover" /> */}
+                                    <img src="/equipe/millena.jpg" alt="Millena Ollermann" className="w-full h-full object-cover" />
                                 </div>
 
                                 {/* Decorative elements */}
