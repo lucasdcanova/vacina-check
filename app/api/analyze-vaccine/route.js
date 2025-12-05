@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import path from 'path';
 import fs from 'fs';
 import { toFile } from 'openai/uploads';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const runtime = 'nodejs';
 export const maxBodySize = '100mb';
@@ -112,23 +113,81 @@ Retorne um JSON estrito com a seguinte estrutura:
 Se o documento não for uma carteirinha de vacinação ou estiver ilegível, retorne um erro no campo observacoes.
         `;
 
-        // Upload do arquivo bruto (pdf ou imagem) para a OpenAI
         let uploadedFile;
-        try {
-            const fileBuffer = Buffer.from(await file.arrayBuffer());
-            const uploadable = await toFile(fileBuffer, fileName, { contentType });
-            uploadedFile = await openai.files.create({
-                file: uploadable,
-                // purpose 'assistants' aceita PDF e funciona com Responses API
-                purpose: 'assistants'
+        let extractedTextFromGemini = null;
+
+        if (isPdf) {
+            // Usar Google Gemini para extrair texto do PDF
+            try {
+                if (!process.env.GEMINI_API_KEY) {
+                    throw new Error("GEMINI_API_KEY não configurada");
+                }
+
+                const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+                const model = genAI.getGenerativeModel({
+                    model: "gemini-3",
+                    generationConfig: {
+                        maxOutputTokens: 8192,
+                        temperature: 0.1
+                    }
+                });
+
+                const fileBuffer = Buffer.from(await file.arrayBuffer());
+                const base64Data = fileBuffer.toString("base64");
+
+                const result = await model.generateContent([
+                    "Extraia todo o texto e informações detalhadas deste documento de vacinação. Mantenha datas, nomes de vacinas, lotes e qualquer anotação relevante. Retorne apenas o texto extraído.",
+                    {
+                        inlineData: {
+                            data: base64Data,
+                            mimeType: "application/pdf",
+                        },
+                    },
+                ]);
+
+                extractedTextFromGemini = result.response.text();
+            } catch (geminiError) {
+                console.error("Erro ao processar PDF com Gemini:", geminiError);
+                return NextResponse.json({
+                    error: 'Falha ao processar PDF com Gemini',
+                    detalhes: geminiError.message
+                }, { status: 500 });
+            }
+        } else {
+            // Upload do arquivo bruto (imagem) para a OpenAI
+            try {
+                const fileBuffer = Buffer.from(await file.arrayBuffer());
+                const uploadable = await toFile(fileBuffer, fileName, { contentType });
+                uploadedFile = await openai.files.create({
+                    file: uploadable,
+                    // purpose 'assistants' aceita PDF e funciona com Responses API
+                    purpose: 'assistants'
+                });
+            } catch (uploadError) {
+                const details = formatErrorDetail(uploadError);
+                console.error('Erro ao fazer upload do arquivo para OpenAI:', details);
+                return NextResponse.json({
+                    error: 'Falha ao enviar arquivo para OpenAI',
+                    detalhes: details
+                }, { status: 500 });
+            }
+        }
+
+        // Preparar conteúdo para o OpenAI
+        const openAIContent = [
+            { type: "input_text", text: systemPrompt }
+        ];
+
+        if (extractedTextFromGemini) {
+            openAIContent.push({
+                type: "input_text",
+                text: `\n\n--- CONTEÚDO EXTRAÍDO DO PDF (VIA GEMINI) ---\n${extractedTextFromGemini}`
             });
-        } catch (uploadError) {
-            const details = formatErrorDetail(uploadError);
-            console.error('Erro ao fazer upload do arquivo para OpenAI:', details);
-            return NextResponse.json({
-                error: 'Falha ao enviar arquivo para OpenAI',
-                detalhes: details
-            }, { status: 500 });
+        } else if (uploadedFile) {
+            openAIContent.push({
+                type: "input_file",
+                file_id: uploadedFile.id
+            });
         }
 
         const generateReport = async (model) => openai.responses.create({
@@ -136,10 +195,7 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
             input: [
                 {
                     role: "user",
-                    content: [
-                        { type: "input_text", text: systemPrompt },
-                        { type: "input_file", file_id: uploadedFile.id }
-                    ]
+                    content: openAIContent
                 }
             ],
             text: { format: { type: "json_object" } },
@@ -186,7 +242,7 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
                 nome: fileName,
                 tipo: contentType,
                 pdf: isPdf,
-                fileId: uploadedFile.id
+                fileId: uploadedFile ? uploadedFile.id : 'gemini-extracted'
             };
             return NextResponse.json(jsonResponse);
         } catch (e) {
