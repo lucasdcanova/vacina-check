@@ -125,7 +125,7 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
 
                 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
                 const model = genAI.getGenerativeModel({
-                    model: "gemini-3",
+                    model: "gemini-1.5-flash",
                     generationConfig: {
                         maxOutputTokens: 8192,
                         temperature: 0.1
