@@ -123,13 +123,13 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
                     throw new Error("GEMINI_API_KEY não configurada");
                 }
 
-                // Forçar API v1 (modelos 1.5 usam v1; v1beta retorna 404 para esses modelos)
-                const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, { apiVersion: 'v1' });
-                const geminiModel = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+                // Usar Gemini 3 Pro Preview (suporte nativo a PDF, 65k tokens output)
+                const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+                const geminiModel = process.env.GEMINI_MODEL || "gemini-3-pro-preview";
                 const model = genAI.getGenerativeModel({
                     model: geminiModel,
                     generationConfig: {
-                        maxOutputTokens: 8192,
+                        maxOutputTokens: 65536, // Máximo do Gemini 3 Pro (65k tokens)
                         temperature: 0.1
                     }
                 });
