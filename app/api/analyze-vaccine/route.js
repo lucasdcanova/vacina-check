@@ -129,7 +129,7 @@ Se o documento não for uma carteirinha de vacinação ou estiver ilegível, ret
                 const model = genAI.getGenerativeModel({
                     model: geminiModel,
                     generationConfig: {
-                        maxOutputTokens: 65536, // Máximo do Gemini 3 Pro (65k tokens)
+                        maxOutputTokens: 65536, // Máximo do Gemini 3 Pro
                         temperature: 0.1
                     }
                 });
