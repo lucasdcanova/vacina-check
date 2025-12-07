@@ -170,10 +170,13 @@ export default function VacinaCheck() {
   const [vacinasConfirmadas, setVacinasConfirmadas] = useState([]);
   const [analise, setAnalise] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  const [etapaProcessamento, setEtapaProcessamento] = useState(0); // 0: idle, 1: preparando, 2: enviando, 3: processando IA, 4: finalizando
+  const [tempoDecorrido, setTempoDecorrido] = useState(0);
   const [textoOCR, setTextoOCR] = useState('');
   const [resultadoIA, setResultadoIA] = useState(null);
   const [activeTab, setActiveTab] = useState('geral');
   const [filtroCarteira, setFiltroCarteira] = useState('todas');
+
 
   const agendarNoWhatsApp = (vacinaNome) => {
     const texto = `Olá! Gostaria de agendar a vacina ${vacinaNome} para ${dadosPaciente.nome}.`;
@@ -332,14 +335,21 @@ export default function VacinaCheck() {
     };
   };
 
-  // Handler de upload
+  // Handler de upload com feedback progressivo
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setCarregando(true);
+      setEtapaProcessamento(1);
+      setTempoDecorrido(0);
+
+      // Iniciar contador de tempo
+      const timerInterval = setInterval(() => {
+        setTempoDecorrido(prev => prev + 1);
+      }, 1000);
 
       try {
-        // Preview rápido apenas para imagens; PDF fica com placeholder
+        // Etapa 1: Preparando arquivo
         if (file.type.startsWith('image/')) {
           const preview = await new Promise((resolve) => {
             const reader = new FileReader();
@@ -351,13 +361,20 @@ export default function VacinaCheck() {
           setImagemCarteira(null);
         }
 
-        // Analisar com IA enviando o arquivo bruto (PDF ou imagem)
+        // Etapa 2: Enviando documento
+        setEtapaProcessamento(2);
+        await new Promise(resolve => setTimeout(resolve, 500)); // Pequeno delay para UX
+
+        // Etapa 3: Analisando com IA (acontece dentro de analisarComIA)
+        setEtapaProcessamento(3);
         const resultado = await analisarComIA(file);
+
+        // Etapa 4: Gerando relatório
+        setEtapaProcessamento(4);
 
         if (resultado) {
           setResultadoIA(resultado);
 
-          // Mapear resposta da API para o formato de vacinas reconhecidas
           const vacinas = resultado.vacinasTomadas.map(v => ({
             nome: v.nome,
             dose: v.dose,
@@ -369,7 +386,6 @@ export default function VacinaCheck() {
           setVacinasConfirmadas(vacinas);
           setTextoOCR(resultado.observacoes || "Análise realizada via IA");
 
-          // Gerar análise automaticamente e pular etapa de confirmação
           const analiseObj = {
             emDia: vacinas.map(v => ({
               ...v,
@@ -394,9 +410,11 @@ export default function VacinaCheck() {
           };
 
           setAnalise(analiseObj);
+
+          // Pequeno delay antes de mostrar resultado para UX
+          await new Promise(resolve => setTimeout(resolve, 800));
           setStep('resultado');
         } else {
-          // Fallback se falhar
           setTextoOCR("Falha na análise IA");
           setStep('analise');
         }
@@ -404,7 +422,10 @@ export default function VacinaCheck() {
         console.error("Erro ao processar arquivo:", error);
         alert(error?.message || "Erro ao processar o arquivo. Tente novamente.");
       } finally {
+        clearInterval(timerInterval);
         setCarregando(false);
+        setEtapaProcessamento(0);
+        setTempoDecorrido(0);
       }
     }
   };
@@ -685,10 +706,55 @@ export default function VacinaCheck() {
               </div>
 
               {carregando && (
-                <div className="mt-6 flex items-center justify-center gap-3 text-brand-blue">
-                  <div className="w-5 h-5 border-2 border-brand-blue border-t-transparent rounded-full animate-spin" />
-                  <span>Analisando carteirinha com IA...</span>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 flex flex-col items-center"
+                >
+                  {/* Spinner minimalista com gradiente da marca */}
+                  <div className="relative w-16 h-16 mb-6">
+                    <div className="absolute inset-0 rounded-full border-4 border-slate-100" />
+                    <div
+                      className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0072a2] border-r-[#6de0e4] animate-spin"
+                      style={{ animationDuration: '1s' }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Syringe className="w-6 h-6 text-[#15335e]" />
+                    </div>
+                  </div>
+
+                  {/* Texto da etapa atual */}
+                  <AnimatePresence mode="wait">
+                    <motion.p
+                      key={etapaProcessamento}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-[#15335e] font-medium text-center"
+                    >
+                      {etapaProcessamento === 1 && 'Preparando documento...'}
+                      {etapaProcessamento === 2 && 'Enviando para análise...'}
+                      {etapaProcessamento === 3 && 'Analisando com inteligência artificial...'}
+                      {etapaProcessamento === 4 && 'Gerando relatório...'}
+                    </motion.p>
+                  </AnimatePresence>
+
+                  {/* Tempo decorrido discreto */}
+                  <p className="text-sm text-[#8f9498] mt-3">
+                    {Math.floor(tempoDecorrido / 60)}:{String(tempoDecorrido % 60).padStart(2, '0')}
+                  </p>
+
+                  {/* Mensagem sutil para tempos longos */}
+                  {tempoDecorrido > 30 && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-xs text-[#8f9498] mt-4 text-center max-w-xs"
+                    >
+                      Documentos com várias páginas podem levar um pouco mais
+                    </motion.p>
+                  )}
+                </motion.div>
               )}
 
               <div className="mt-8 p-4 bg-brand-light rounded-xl border border-brand-blue/10">
