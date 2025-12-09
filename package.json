@@ -7,9 +7,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "STATIC_EXPORT=true next build",
+    "cap:init": "npx cap init VacinaCheck br.com.saudelivre.vacinacheck --web-dir out",
+    "cap:add:ios": "npx cap add ios",
+    "cap:sync": "npx cap sync",
+    "cap:copy": "npx cap copy",
+    "cap:open:ios": "npx cap open ios",
+    "cap:build:ios": "npm run export && npx cap sync ios",
+    "ios": "npm run export && npx cap copy ios && npx cap open ios",
+    "ios:dev": "npm run dev",
+    "generate:icons": "node scripts/generate-icons.js",
+    "prepare:appstore": "npm run export && npx cap sync ios && echo 'Ready for App Store! Open Xcode with: npx cap open ios'",
+    "postinstall": "npx cap sync || true"
   },
   "dependencies": {
+    "@capacitor/app": "^8.0.0",
+    "@capacitor/browser": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/haptics": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "@capacitor/keyboard": "^8.0.0",
+    "@capacitor/splash-screen": "^8.0.0",
+    "@capacitor/status-bar": "^8.0.0",
     "@google/generative-ai": "^0.24.1",
     "framer-motion": "^12.23.25",
     "lucide-react": "^0.555.0",
@@ -20,10 +40,14 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.0.0",
+    "@types/node": "^20.0.0",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-next": "^15.0.0",
     "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.0"
+    "sharp": "^0.33.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.0.0"
   }
 }

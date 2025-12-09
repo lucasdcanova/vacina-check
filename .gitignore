@@ -32,3 +32,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# iOS/Capacitor
+ios/App/App/public/
+ios/App/Pods/
+ios/DerivedData/
+ios/*.xcworkspace/xcuserdata/
+ios/**/*.xcuserstate
+ios/**/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.ipa
+
+# Android (se adicionar no futuro)
+android/app/build/
+android/.gradle/
+android/build/
+*.apk
+*.aab
+
+# Build artifacts
+*.log
+.cache

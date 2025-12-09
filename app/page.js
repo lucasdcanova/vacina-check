@@ -4,11 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail, ArrowRight } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
+import InstallPrompt from '@/components/InstallPrompt';
+import { useCapacitor } from '@/lib/capacitor';
 
 export default function LandingPage() {
   const [showChecker, setShowChecker] = useState(false);
   const [showMapMenu, setShowMapMenu] = useState(false);
   const [isClinicOpen, setIsClinicOpen] = useState(false);
+
+  // Capacitor integration for native features
+  const { hapticSelection, openBrowser, isNative } = useCapacitor();
 
   useEffect(() => {
     const checkOpen = () => {
@@ -26,9 +31,9 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray selection:bg-brand-cyan/20">
+    <div className="min-h-screen min-h-screen-ios bg-slate-50 font-sans text-brand-dark-gray selection:bg-brand-cyan/20 pb-safe">
       {/* Minimal Header */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-slate-100">
+      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-sm z-50 border-b border-slate-100 pt-safe">
         <div className="max-w-5xl mx-auto px-4 md:px-6 h-16 md:h-20 flex justify-between items-center">
           <a href="/" className="flex items-center gap-2">
             <img src="/logo-header.png" alt="Saúde Livre" className="h-8 md:h-10 w-auto" />
@@ -258,6 +263,9 @@ export default function LandingPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* PWA Install Prompt */}
+      <InstallPrompt />
     </div>
   );
 }

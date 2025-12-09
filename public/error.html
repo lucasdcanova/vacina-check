@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Erro - VacinaCheck</title>
+  <link rel="icon" href="/icons/favicon-32x32.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0072a2 0%, #15335e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: #f0f9ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .icon svg {
+      width: 40px;
+      height: 40px;
+      color: #0072a2;
+    }
+    
+    h1 {
+      color: #15335e;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+    
+    p {
+      color: #464753;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .button {
+      display: inline-block;
+      background: linear-gradient(to right, #6de0e4 0%, #0072a2 50%, #15335e 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 114, 162, 0.3);
+    }
+    
+    .button:active {
+      transform: translateY(0);
+    }
+    
+    .offline-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #fef2f2;
+      color: #dc2626;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .offline-indicator::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #dc2626;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414" />
+      </svg>
+    </div>
+    
+    <div class="offline-indicator">
+      Sem conexão
+    </div>
+    
+    <h1>Você está offline</h1>
+    <p>Não foi possível carregar a página. Verifique sua conexão com a internet e tente novamente.</p>
+    
+    <a href="/" class="button" onclick="window.location.reload(); return false;">
+      Tentar novamente
+    </a>
+  </div>
+  
+  <script>
+    // Auto-reload when back online
+    window.addEventListener('online', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

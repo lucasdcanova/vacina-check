@@ -512,7 +512,7 @@ export default function VacinaCheck() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-brand-dark-gray">
+    <div className="min-h-screen min-h-screen-ios bg-slate-50 font-sans text-brand-dark-gray pb-safe">
       {/* Background decorativo */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-cyan/10 rounded-full blur-3xl" />
@@ -520,8 +520,8 @@ export default function VacinaCheck() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-slate-100 bg-white/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 py-4 md:px-6 md:py-6">
+      <header className="relative z-10 border-b border-slate-100 bg-white/80 backdrop-blur-md sticky-ios top-0 pt-safe">
+        <div className="max-w-6xl mx-auto px-4 py-4 md:px-6 md:py-6 container-mobile">
           <div className="flex items-center gap-4">
             <img src="/logo-header.png" alt="Saúde Livre" className="h-10 w-auto" />
             <div className="h-8 w-px bg-slate-200"></div>
