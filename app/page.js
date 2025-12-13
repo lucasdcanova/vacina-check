@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Shield, Check, X, Syringe, MessageCircle, Mail, ArrowRight } from 'lucide-react';
 import VacinaCheck from '@/components/VacinaCheck';
-import InstallPrompt from '@/components/InstallPrompt';
 import { useCapacitor } from '@/lib/capacitor';
 
 export default function LandingPage() {
@@ -263,9 +262,6 @@ export default function LandingPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* PWA Install Prompt */}
-      <InstallPrompt />
     </div>
   );
 }
